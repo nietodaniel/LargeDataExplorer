@@ -1,0 +1,24 @@
+Package: LargeDataExplorer
+Title: Fast and powerful package for preliminary exploration of large datasets
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Daniel",
+           family = "Nieto",
+           role = c("aut", "cre"),
+           email = "nieto.daniel221@gmail.com",
+           comment = c(ORCID = "https://orcid.org/0000-0002-8609-3388"))
+Description: This package explores a dataset, categorizing its variables as numeric, categorical (text), levels (categorical numbers), boolean, plain text, Primary Key (A different value for each row), NA (Empty variable)or Univalue (Only one value in the whole variable). It will also calculate basic statistics for each variable.
+License: GPL-3 + file LICENSE
+Language: en
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Imports: 
+    e1071,
+    stats
+URL: https://github.com/nietodaniel/LargeDataExplorer
+BugReports: https://github.com/nietodaniel/LargeDataExplorer/issues
+Suggests: 
+    testthat,
+    covr
