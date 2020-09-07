@@ -5,7 +5,7 @@
 #' max rate of NAs (0-1) can be set to filther further
 #'
 #' @param maxNARate numeric vector 0-1. Null to ignore
-#' @param LDE.Explore1 LDE.Explore() Object
+#' @param LDE.ExploreObject LDE.Explore() Object
 #' @param ... LDE.Explore() Objects
 #' @return A list containing the useful variables classified by its type with
 #' their descriptive statistics and a vector containing the useful variable names
@@ -29,8 +29,12 @@
 #' str(usefulVars$df.bool) #Variables of bool type
 #' str(usefulVars$df.levels) #Variables of categorical (numeric) type
 #' str(usefulVars$df.primarykeys) #Variables which could be primary keys
-LDE.UsefulVars<-function(maxNARate=NULL,LDE.Explore1,...){
-  return(core.UsefulVars(maxNARate,LDE.Explore1,...))
+#' str(usefulVars$df.keys) #Variables which could be keys
+LDE.UsefulVars<-function(maxNARate=NULL,LDE.ExploreObject,...){
+  if(is.null(LDE.ExploreObject)){
+    stop("Error: LDE.ExploreObject is null")
+  }
+  return(core.UsefulVars(maxNARate,LDE.ExploreObject,...))
 }
 
 #' data.frame preliminar exploration
@@ -57,8 +61,12 @@ LDE.UsefulVars<-function(maxNARate=NULL,LDE.Explore1,...){
 #' str(Explore.df$df.levels) #Variables of categorical (numeric) type
 #' str(Explore.df$df.bool) #Variables of bool type
 #' str(Explore.df$df.primarykeys) #Variables which could be primary keys
+#' str(Explore.df$df.keys) #Variables which could be keys
 #' str(Explore.df$df.repeatedVars) #Variables with repeated information
 LDE.Explore<-function(dat){
+  if(is.null(dat)){
+    stop("Error: data is null")
+  }
   dataname=deparse(substitute(dat))
   return(core.ExploreDataset(dat,dataname))
 }
@@ -88,6 +96,9 @@ LDE.Explore<-function(dat){
 #' str(dat.clean)
 
 LDE.AutoProcess<-function(dat,maxNARate=NULL){
+  if(is.null(dat)){
+    stop("Error: data is null")
+  }
   dataname=deparse(substitute(dat))
   return(core.AutoProcess(dat,dataname,maxNARate))
 }

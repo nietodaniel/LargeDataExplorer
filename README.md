@@ -8,10 +8,11 @@
 
 Fast and powerful package for preliminary exploration of large datasets
 
-## Installation & Load
+## Installation & Loading
 
 ``` r
 # install.packages("devtools")
+library(devtools)
 devtools::install_github("nietodaniel/LargeDataExplorer")
 library(LargeDataExplorer)
 ```
@@ -20,29 +21,28 @@ library(LargeDataExplorer)
 
 ### LDE.AutoProcess(): Automatically explore, Filter relevant variables & Transform data.frame
 
-Exploring, filtering and transforming, just with 2 lines of code
+Exploring, filtering and transforming, just with 2 lines of code [More Info](http://www.digitalmedtools.com/Freeware/LargeDataExplorer#AutoProcess)
 ``` r
 Expl<-LDE.AutoProcess(df)
 df.clean<-Expl$df.filtered #data.frame with only the useful variables
+
+print(Expl$var.classif) #How the variables were clasiffied
 ```
 
-Viewing the information of the exploring and filtering process
-``` r
-#Process information
-Expl$process.info$Exploration #See LDE.Explore()
-Expl$process.info$UsefulVars #See LDE.Explore()
-```
+![LDE.AutoProcess()](/images/AutoProcess.png)
+Format: ![Alt Text](http://www.digitalmedtools.com/Freeware/LargeDataExplorer#AutoProcess)
+
+
 
 ### LDE.Explore(): Preliminary Exploration of data.frame
 
-Performing the exploration
+Preliminary exploration and calculation of descriptive statistics [More Info](http://www.digitalmedtools.com/Freeware/LargeDataExplorer#Explore)
 ``` r
 Expl<-LDE.Explore(df)
-```
 
-Viewing the descriptive statistics (mean, min, max, median, sd, nlevels, e1071::skewness,etc.) for each variable type
-``` r
+#Descriptive statistics for each variable type
 View(Expl$df.primarykeys) #Variables that have a different value for each non-NA row
+View(Expl$df.keys) #Variables which could be keys
 View(Expl$df.num) #Numeric variables
 View(Expl$df.bool) #Categorical variables that have only two values (E.g. 0 & 1, or "Red" & "Blue")
 View(Expl$df.levels) #Categorical (numerical) variables (If ordinal, they don't have to be transformed)
@@ -53,32 +53,28 @@ View(Expl$df.text) #Plain text variables that contain too much categories to be 
 View(Expl$df.repeatedVars) #Numeric/Categorical variables that hold duplicated information, thus can be removed
 ```
 
+![LDE.Explore()](/images/Explore.png)
+Format: ![Alt Text](http://www.digitalmedtools.com/Freeware/LargeDataExplorer#Explore)
+
+
+
 ### LDE.UsefulVars(): Filtering of the useful variables
 
-Selecting the useful variables: Booleans, numeric, categorical and primary keys
+Selecting the useful variables: Booleans, numeric, categorical and primary keys [More Info](http://www.digitalmedtools.com/Freeware/LargeDataExplorer#UsefulVars)
 ``` r
 Expl1<-LDE.Explore(df.1)
 Expl2<-LDE.Explore(df.2)
-useful.vars<-LDE.UsefulVars(maxNARate,Expl1,Expl2) #You can add only 1 or as many as you want
+maxNARate<-0.2
+useful.vars<-LDE.UsefulVars(maxNARate,Expl1,Expl2) #You can add only 1 Expl or as many as you want
+
+included.vars.df.1<-useful.vars$useful.varnames$df.1 #Getting the useful varnames for df.1
+df.1<-df.1[ , (names(df.1) %in% included.vars.df.1)] #Selecting only the useful variables
 ```
 
-Getting the useful varnames
-``` r
-included.vars.df.1<-useful.vars$useful.varnames$df.1
-included.vars.df.2<-useful.vars$useful.varnames$df.2
-```
+![LDE.UsefulVars()](/images/UsefulVars.png)
+Format: ![Alt Text](http://www.digitalmedtools.com/Freeware/LargeDataExplorer#UsefulVars)
 
-Selecting only the useful variables in my dataset
-``` r
-df.1<-df.1[ , (names(df.1) %in% included.vars.df.1)]
-df.2<-df.2[ , (names(df.2) %in% included.vars.df.2)]
-```
 
-Viewing the descriptive statistics for each selected variable in each useful variable type on all the datasets
-``` r
-View(useful.vars$df.num) #Same structure for other variable types
-print(useful.vars$removed.varnames) #Removed Varnames for each dataset
-```
 
 ## More information?
 

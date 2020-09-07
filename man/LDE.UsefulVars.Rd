@@ -4,12 +4,12 @@
 \alias{LDE.UsefulVars}
 \title{useful variables selection}
 \usage{
-LDE.UsefulVars(maxNARate = NULL, LDE.Explore1, ...)
+LDE.UsefulVars(maxNARate = NULL, LDE.ExploreObject, ...)
 }
 \arguments{
 \item{maxNARate}{numeric vector 0-1. Null to ignore}
 
-\item{LDE.Explore1}{LDE.Explore() Object}
+\item{LDE.ExploreObject}{LDE.Explore() Object}
 
 \item{...}{LDE.Explore() Objects}
 }
@@ -40,6 +40,7 @@ str(usefulVars$df.category) #Variables of categorical (text) type
 str(usefulVars$df.bool) #Variables of bool type
 str(usefulVars$df.levels) #Variables of categorical (numeric) type
 str(usefulVars$df.primarykeys) #Variables which could be primary keys
+str(usefulVars$df.keys) #Variables which could be keys
 }
 \author{
 Daniel Nieto
