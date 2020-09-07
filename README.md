@@ -30,7 +30,7 @@ LDE.AutoProcess(): Automatically generates descriptive statistics, removes unuse
 
 <img src="https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/AutoProcess.png" width="200">
 
-*click to expand*
+
 
 ## Preliminary Exploration & descriptive statistics
 
@@ -42,7 +42,6 @@ LDE.Explore(): Classifies variables as bool, categorical, categorical (numeric),
 
 <img src="https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/Explore.png" width="200">
 
-*click to expand*
 
 
 ## Retrieve useful variables for analytics
