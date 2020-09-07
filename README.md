@@ -25,7 +25,6 @@ Exploring, filtering and transforming, with a few lines of code [(More Info)](ht
 ``` r
 Expl<-LDE.AutoProcess(df)
 print(Expl$var.classif) #How the variables were clasiffied
-print(Expl$var.classif) #How the variables were clasiffied
 
 df.clean<-Expl$df.filtered #Filtered dataset
 ```
@@ -38,18 +37,10 @@ df.clean<-Expl$df.filtered #Filtered dataset
 Preliminary exploration and calculation of descriptive statistics [(More Info)](http://www.digitalmedtools.com/Freeware/LargeDataExplorer#Explore)
 ``` r
 Expl<-LDE.Explore(df)
+View(Expl$df.num) #View numeric variables statistics
 
-#Descriptive statistics for each variable type
-View(Expl$df.primarykeys) #Variables that have a different value for each non-NA row
-View(Expl$df.keys) #Variables which could be keys
-View(Expl$df.num) #Numeric variables
-View(Expl$df.bool) #Categorical variables that have only two values (E.g. 0 & 1, or "Red" & "Blue")
-View(Expl$df.levels) #Categorical (numerical) variables (If ordinal, they don't have to be transformed)
-View(Expl$df.category) #Categorical (text) variables (Must be converted with One-Hot Encoding)
-View(Expl$df.onevalue) #Variables that have only 1 value in all its non-NA rows
-View(Expl$df.NA) #Empty variables that only contain NAs
-View(Expl$df.text) #Plain text variables that contain too much categories to be considered categorical
-View(Expl$df.repeatedVars) #Numeric/Categorical variables that hold duplicated information, thus can be removed
+# You can also see Expl$df.bool, Expl$df.levels, Expl$df.category, Expl$df.onevalue, Expl$df.NA, 
+#   Expl$df.text, Expl$df.repeatedVars 
 ```
 Example of View(Expl$df.num)
 <img src="https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/Explore.png" width="700">
@@ -61,12 +52,10 @@ Example of View(Expl$df.num)
 Selecting the useful variables: Booleans, numeric, categorical and primary keys [(More Info)](http://www.digitalmedtools.com/Freeware/LargeDataExplorer#UsefulVars)
 ``` r
 Expl1<-LDE.Explore(df.1)
-Expl2<-LDE.Explore(df.2)
 maxNARate<-0.2
-useful.vars<-LDE.UsefulVars(maxNARate,Expl1,Expl2) #You can add only 1 Expl or as many as you want
+UsefulVarsObject<-LDE.UsefulVars(maxNARate,Expl1) #You can add only 1 Expl Object or as many as you want
 
-included.vars.df.1<-useful.vars$useful.varnames$df.1 #Getting the useful varnames for df.1
-df.1<-df.1[ , (names(df.1) %in% included.vars.df.1)] #Selecting only the useful variables
+varsToInclude<-UsefulVarsObject$useful.varnames$df.1 #useful variable names for df.1
 ```
 
 ## More information?
