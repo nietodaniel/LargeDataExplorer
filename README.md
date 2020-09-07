@@ -29,7 +29,7 @@ print(Expl$var.classif) #How the variables were clasiffied
 
 df.clean<-Expl$df.filtered #Filtered dataset
 ```
-<img src="https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/AutoProcess.png" width="500">
+<img src="https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/AutoProcess.png" width="600">
 
 
 
@@ -52,7 +52,7 @@ View(Expl$df.text) #Plain text variables that contain too much categories to be 
 View(Expl$df.repeatedVars) #Numeric/Categorical variables that hold duplicated information, thus can be removed
 ```
 Example of View(Expl$df.num)
-<img src="https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/Explore.png" width="500">
+<img src="https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/Explore.png" width="600">
 
 
 
