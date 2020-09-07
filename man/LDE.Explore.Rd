@@ -31,6 +31,7 @@ str(Explore.df$df.category) #Variables of categorical (text) type
 str(Explore.df$df.levels) #Variables of categorical (numeric) type
 str(Explore.df$df.bool) #Variables of bool type
 str(Explore.df$df.primarykeys) #Variables which could be primary keys
+str(Explore.df$df.keys) #Variables which could be keys
 str(Explore.df$df.repeatedVars) #Variables with repeated information
 }
 \author{

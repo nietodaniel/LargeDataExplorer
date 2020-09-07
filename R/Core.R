@@ -12,12 +12,13 @@ core.ExploreDataset<-function(dat1,dataname1){
   df.levels=NULL
   df.bool=NULL
   df.primarykeys=NULL
+  df.keys=NULL
   cat(paste0("\nProcessing ",ncol(dat1)," variables\nProcessed:"))
   for (i in 1:ncol(dat1)) {
     cat(paste0(i," "))
     nombreCol<-names(dat1)[i]
     vec1<-as.data.frame(dat1)[,nombreCol]
-    type=internalfun.SummType(vec1,dataname1)
+    type=internalfun.SummType(vec1,nombreCol)
     if(type==-2){
       df.onevalue=internalfun.Summary.err(i,nombreCol,df.onevalue)
     }
@@ -42,6 +43,9 @@ core.ExploreDataset<-function(dat1,dataname1){
     if(type==5){
       df.primarykeys=internalfun.Summary.err(i,nombreCol,df.primarykeys)
     }
+    if(type==6){
+      df.keys=internalfun.Summary.factor(i,nombreCol,vec1,dataname1,df.keys)
+    }
   }
   cat(" Done!\n")
   cat(" Seeking repeated vars...\n")
@@ -65,10 +69,12 @@ core.ExploreDataset<-function(dat1,dataname1){
     df.num=rep.num$df.filtered
     df.repeatedVars=rep.num$df.repeated
   }
-  rep.levelcat=internalfun.seekRepeated(df.repeatedVars,TRUE,df.levels,df.category)
-  if(rep.levelcat$hasRepeated==TRUE){
-    df.category=rep.levelcat$df.filtered
-    df.repeatedVars=rep.levelcat$df.repeated
+  rep.levelcatkey=internalfun.seekRepeated(df.repeatedVars,TRUE,df.levels,df.category,df.keys)
+  if(rep.levelcatkey$hasRepeated==TRUE){
+    df.levels=rep.levelcatkey$df.filtered$df1
+    df.category=rep.levelcatkey$df.filtered$df2
+    df.keys=rep.levelcatkey$df.filtered$df2b
+    df.repeatedVars=rep.levelcatkey$df.repeated
   }
   cat(" Done!\n")
   if(!is.null(df.category)){
@@ -87,7 +93,7 @@ core.ExploreDataset<-function(dat1,dataname1){
   }else{
     print(paste0("Primary keys: ",paste(df.primarykeys$varname,sep=", ")))
   }
-  return(list("dataname"=dataname1,"df.repeatedVars"=df.repeatedVars,"df.primarykeys"=df.primarykeys,"df.bool"=df.bool,"df.levels"=df.levels,"df.category"=df.category,"df.onevalue"=df.onevalue,"df.NA"=df.NA,"df.num"=df.num,"df.text"=df.text))
+  return(list("dataname"=dataname1,"df.keys"=df.keys,"df.repeatedVars"=df.repeatedVars,"df.primarykeys"=df.primarykeys,"df.bool"=df.bool,"df.levels"=df.levels,"df.category"=df.category,"df.onevalue"=df.onevalue,"df.NA"=df.NA,"df.num"=df.num,"df.text"=df.text))
 }
 
 core.UsefulVars<-function(maxNARate,LargeDataExplorer.Explore1,...){
@@ -105,6 +111,7 @@ core.UsefulVars<-function(maxNARate,LargeDataExplorer.Explore1,...){
   df.levels=NULL
   df.bool=NULL
   df.primarykeys=NULL
+  df.keys=NULL
   useful.varnames=list()
   removed.varnames=list()
   cat(" \nExploring summaries: ")
@@ -116,6 +123,7 @@ core.UsefulVars<-function(maxNARate,LargeDataExplorer.Explore1,...){
     res.bool=Exploration$df.bool
     res.levels=Exploration$df.levels
     res.primarykeys=Exploration$df.primarykeys
+    res.keys=Exploration$df.keys
     res.names=c()
     res.names.removed=c(Exploration$df.text$varname,Exploration$df.NA$varname,Exploration$df.onevalue$varname,Exploration$df.repeatedVars$varname)
     res.names.filtered=c()
@@ -147,6 +155,10 @@ core.UsefulVars<-function(maxNARate,LargeDataExplorer.Explore1,...){
       df.primarykeys=internalfun.MixTableNResult(df.primarykeys,res.primarykeys)
       res.names=c(res.names,res.primarykeys$varname)
     }
+    if(!(is.null(res.keys))){
+      df.keys=internalfun.MixTableNResult(df.keys,res.keys)
+      res.names=c(res.names,res.keys$varname)
+    }
     useful.varnames[[dataname]] = res.names
     removed.varnames[[dataname]] = list("not.useful"=res.names.removed,"filtered.out"=res.names.filtered)
   }
@@ -156,7 +168,8 @@ core.UsefulVars<-function(maxNARate,LargeDataExplorer.Explore1,...){
   rownames(df.num)<-NULL
   rownames(df.bool)<-NULL
   rownames(df.primarykeys)<-NULL
-  return(list("removed.varnames"=removed.varnames,"useful.varnames"=useful.varnames,"df.primarykeys"=df.primarykeys,"df.bool"=df.bool,"df.levels"=df.levels,"df.category"=df.category,"df.num"=df.num))
+  rownames(df.keys)<-NULL
+  return(list("removed.varnames"=removed.varnames,"useful.varnames"=useful.varnames,"df.keys"=df.keys,"df.primarykeys"=df.primarykeys,"df.bool"=df.bool,"df.levels"=df.levels,"df.category"=df.category,"df.num"=df.num))
 }
 
 core.AutoProcess<-function(dat,dataname,maxNARate){
@@ -195,9 +208,24 @@ core.AutoProcess<-function(dat,dataname,maxNARate){
     dat.filtered[,varname]=as.factor(as.numeric(dat.filtered[,varname]))
   }
   for (varname in tmp.UsefulVars$df.primarykeys$varname) {
-    dat.filtered[,varname]=as.factor(dat.filtered[,varname])
+    dat.filtered[,varname]=as.character(dat.filtered[,varname])
   }
-
+  for (varname in tmp.UsefulVars$df.keys$varname) {
+    dat.filtered[,varname]=as.character(dat.filtered[,varname])
+  }
+  var.classif=list()
+  if(!is.null(tmp.UsefulVars$df.category))
+    var.classif$df.category=tmp.UsefulVars$df.category$varname
+  if(!is.null(tmp.UsefulVars$df.num))
+    var.classif$df.num=tmp.UsefulVars$df.num$varname
+  if(!is.null(tmp.UsefulVars$df.primarykeys))
+    var.classif$df.primarykeys=tmp.UsefulVars$df.primarykeys$varname
+  if(!is.null(tmp.UsefulVars$df.levels))
+    var.classif$df.levels=tmp.UsefulVars$df.levels$varname
+  if(!is.null(tmp.UsefulVars$df.keys))
+    var.classif$df.keys=tmp.UsefulVars$df.keys$varname
+  if(!is.null(tmp.UsefulVars$df.bool))
+    var.classif$df.bool=tmp.UsefulVars$df.bool$varname
   ###
-  return(list("df.filtered"=dat.filtered,"process.info"=process.info))
+  return(list("df.filtered"=dat.filtered,"process.info"=process.info,"var.classif"=var.classif))
 }

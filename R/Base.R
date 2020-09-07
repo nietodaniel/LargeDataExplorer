@@ -137,14 +137,16 @@ internalfun.isEntire<-function(vec){
   return(res)
 }
 
-internalfun.SummType<-function(vec,dataname){
+internalfun.SummType<-function(vec,varname){
   if(sum(is.na(vec))==length(vec)){
     return(-1) #df.NA
   }
+  vec <- vec[!is.na(vec)]
   if(length(vec)==length(unique(vec))){
     return(5) #primary key
   }
-  vec <- vec[!is.na(vec)]
+  if(substr(varname, start = 1, stop = 2)=="ID" | substr(varname, start = 1, stop = 3)=="COD" || substr(varname, start = nchar(varname)-1, stop = nchar(varname))=="ID")
+    return(6) #key
   rrr<-table(vec)
   if(length(rrr)==1){
     return(-2) #df.univalue
@@ -161,8 +163,16 @@ internalfun.SummType<-function(vec,dataname){
   if(length(rrr)<(100)){
     return(1) #df.category
   }
+  #rrr<-data.frame(rrr)
+  #indexes<-sample(1:length(rrr), 40, replace=FALSE)
+  #smp<-rrr[indexes,1]
+  #smp<-by(smp, 1:40, function(val) nchar(val))
+  #sdx<-imports.sd(smp)
+  #if(is.numeric(sdx) & sdx>0.2)
   return(4)
+  #return(6) #Key
 }
+
 
 internalfun.VarTypeName<-function(type){
   if(type==-3){
@@ -192,6 +202,9 @@ internalfun.VarTypeName<-function(type){
   if(type==5){
     return("Primary key")
   }
+  if(type==6){
+    return("key")
+  }
 }
 
 internalfun.findVarname<-function(index,df.summ){
@@ -206,13 +219,14 @@ internalfun.findVarname<-function(index,df.summ){
   }
 }
 
-internalfun.seekRepeated<-function(df.repeated,isCategory,dat1,dat2=NULL){
+internalfun.seekRepeated<-function(df.repeated,isCategory,dat1,dat2=NULL,dat2b=NULL){
   if((is.null(dat1))){
     return(list("hasRepeated"=FALSE))
   }
   if(!(is.null(dat2))){
     dat3<-dat1
     dat1<-rbind(dat1,dat2)
+    dat1<-rbind(dat1,dat2b)
   }
   summ<- data.frame(matrix(ncol = 5, nrow = nrow(dat1)))
   colnames(summ)<- c("varname","sd","vals","NAs","repeatedVar")
@@ -236,12 +250,21 @@ internalfun.seekRepeated<-function(df.repeated,isCategory,dat1,dat2=NULL){
     summ.repeated$repeatedVar<-by(rep.indeces, 1:length(rep.indeces), function(index) internalfun.findVarname(index,summ))
   }
   if(!(is.null(dat2))){
-    dat1=dat3
+    dat1<-dat3
+    dat1=dat1[!(dat1$varname %in% summ.repeated$varname),]
+    dat2=dat2[!(dat2$varname %in% summ.repeated$varname),]
+    dat2b=dat2b[!(dat2b$varname %in% summ.repeated$varname),]
+    dat1=list("df1"=dat1,"df2"=dat2,"df2b"=dat2b)
+  }else{
+    dat1=dat1[!(dat1$varname %in% summ.repeated$varname),]
   }
-  dat1=dat1[!(dat1$varname %in% summ.repeated$varname),]
   summ.repeated=summ.repeated[,c(1,5)]
   df.repeated=internalfun.MixTableNResult(df.repeated,summ.repeated)
-  return(list("df.filtered"=dat1,"df.repeated"=df.repeated,"hasRepeated"=hasRepeated))
+  if(!(is.null(dat2))){
+     return(list("df.filtered"=dat1,"df.repeated"=df.repeated,"hasRepeated"=hasRepeated))
+  }else{
+    return(list("df.filtered"=dat1,"df.repeated"=df.repeated,"hasRepeated"=hasRepeated))
+  }
 }
 
 internalfun.UsefulVars.filter<-function(filter.vars,df,maxNApercentage){
