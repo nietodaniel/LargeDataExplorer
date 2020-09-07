@@ -27,7 +27,7 @@ df.clean <- LDEAuto$df.filtered                               #Retrieve the filt
 ```
 LDE.AutoProcess(): Automatically generates descriptive statistics, removes unuseful variables (NA-only, 1-value-only, plain text and repeated info, excess NAs), then returns the cleaned and re-formatted dataset. [(More Info)](http://www.digitalmedtools.com/Freeware/LargeDataExplorer#AutoProcess)
 
-       <img src="https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/AutoProcess.png" width="200">[(View Image)](https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/AutoProcess.png)
+       <img src="https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/AutoProcess.png" width="200"> [(View Image)](https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/AutoProcess.png)
 
       
 
@@ -39,7 +39,7 @@ View(LDEExplore$df.num)                                        #View the descrip
 ```
 LDE.Explore(): Classifies variables as bool, categorical, categorical (numeric), numeric, primary key, etc. [(More Info)](http://www.digitalmedtools.com/Freeware/LargeDataExplorer#Explore)
 
-       <img src="https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/Explore.png" width="200">[(View Image)](https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/Explore.png)
+       <img src="https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/Explore.png" width="200"> [(View Image)](https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/Explore.png)
 
       
 
