@@ -18,7 +18,7 @@ library(LargeDataExplorer)
 ```
 
 
-### Automatical exploration, variable filtering & re-formatting of a dataset
+## Automatical exploration, variable filtering & re-formatting
 
 ``` r
 LDEAuto <- LDE.AutoProcess(df)     
@@ -31,7 +31,7 @@ LDE.AutoProcess(): Automatically generates descriptive statistics, removes unuse
 
 
 
-### Preliminary Exploration of dataset with descriptive statistics
+## Preliminary Exploration & descriptive statistics
 
 ``` r
 LDEExplore <- LDE.Explore(df)
@@ -43,7 +43,7 @@ LDE.Explore(): Classifies variables as bool, categorical, categorical (numeric),
 
 
 
-### Filtering which variables might be useful
+## Retrieve useful variables for analytics
 
 ``` r
 LDEExplore <- LDE.Explore(df.1)                                #An LDE Exploration must be performed first
