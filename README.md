@@ -38,7 +38,7 @@ LDE.AutoProcess(): Automatically generates descriptive statistics, removes unuse
 LDEExplore <- LDE.Explore(df)
 View(LDEExplore$df.num)                                           #View the descriptive statistics
 ```
-LDE.Explore(): Classifies variables as bool, categorical, categorical (numeric), numeric, primary key, etc.
+LDE.Explore(): Classifies variables as bool, categorical, categorical (numeric), numeric, primary key, etc. Descriptive statistics are generated for each variable type
 
 <img src="https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/Explore.png" width="200">
 
@@ -52,12 +52,11 @@ maxNARate <- 0.2                                                  #Values betwee
 LDEUsefulVars <- LDE.UsefulVars(maxNARate,LDEExplore)             #You can use 1 LDEExplore Objects or as many as you want
 varsToInclude<-LDEUsefulVars$useful.varnames$df.1                 #Retrieve a string vector with the useful variable names for df.1
 ```
-LDE.UsefulVars(): Identifies whether variables have unuseful information (Na-only, 1-value only, etc.)
-
+LDE.UsefulVars(): Identifies whether variables have unuseful information (Na-only, 1-value only, etc.). Returns useful & unuseful variable names.
 
 
 ## More information?
-- [Large Data Explorer Information](http://www.digitalmedtools.com/Freeware/LargeDataExplorer)
+- [Large Data Explorer Full Information](http://www.digitalmedtools.com/Freeware/LargeDataExplorer)
 - [More Free packages and apps](http://www.digitalmedtools.com/Freeware)
 - [Digital MedTools: Software & Services for Biomedic Researchers](http://www.digitalmedtools.com)
 - Example dataset used: "SECOP 2", https://www.colombiacompra.gov.co/
