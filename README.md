@@ -19,9 +19,9 @@ library(LargeDataExplorer)
 
 ## Features
 
-### LDE.AutoProcess(): Automatically explore, Filter relevant variables & Transform data.frame
+### Automatically explore, Filter relevant variables & Transform data.frame
 
-Exploring, filtering and transforming, with a few lines of code [(More Info)](http://www.digitalmedtools.com/Freeware/LargeDataExplorer#AutoProcess)
+LDE.AutoProcess(): Exploring, filtering and transforming, with a few lines of code [(More Info)](http://www.digitalmedtools.com/Freeware/LargeDataExplorer#AutoProcess)
 ``` r
 Expl<-LDE.AutoProcess(df)
 print(Expl$var.classif) #How the variables were clasiffied
@@ -32,9 +32,9 @@ df.clean<-Expl$df.filtered #Filtered dataset
 
 
 
-### LDE.Explore(): Preliminary Exploration of data.frame
+### Preliminary Exploration of data.frame
 
-Preliminary exploration and calculation of descriptive statistics [(More Info)](http://www.digitalmedtools.com/Freeware/LargeDataExplorer#Explore)
+LDE.Explore(): Preliminary exploration and calculation of descriptive statistics [(More Info)](http://www.digitalmedtools.com/Freeware/LargeDataExplorer#Explore)
 ``` r
 Expl<-LDE.Explore(df)
 View(Expl$df.num) #View numeric variables statistics
@@ -47,9 +47,9 @@ Example of View(Expl$df.num)
 
 
 
-### LDE.UsefulVars(): Filtering of the useful variables
+### Filtering of the useful variables
 
-Selecting the useful variables: Booleans, numeric, categorical and primary keys [(More Info)](http://www.digitalmedtools.com/Freeware/LargeDataExplorer#UsefulVars)
+LDE.UsefulVars(): Selecting the useful variables: Booleans, numeric, categorical and primary keys [(More Info)](http://www.digitalmedtools.com/Freeware/LargeDataExplorer#UsefulVars)
 ``` r
 Expl1<-LDE.Explore(df.1)
 maxNARate<-0.2
