@@ -6,7 +6,8 @@
 
 # LargeDataExplorer
 
-Fast and powerful package for preliminary exploration of large datasets
+Fast and powerful package for preliminary exploration of large datasets.
+[(Full Package Information)](http://www.digitalmedtools.com/Freeware/LargeDataExplorer)
 
 ## Installation & Loading
 
@@ -17,52 +18,48 @@ devtools::install_github("nietodaniel/LargeDataExplorer")
 library(LargeDataExplorer)
 ```
 
-## Features
 
-### Automatically explore, Filter relevant variables & Transform data.frame
+## Automatical exploration, variable filtering & re-formatting
 
-LDE.AutoProcess(): Exploring, filtering and transforming, with a few lines of code [(More Info)](http://www.digitalmedtools.com/Freeware/LargeDataExplorer#AutoProcess)
 ``` r
-Expl<-LDE.AutoProcess(df)
-print(Expl$var.classif) #How the variables were clasiffied
-
-df.clean<-Expl$df.filtered #Filtered dataset
+LDEAuto <- LDE.AutoProcess(df)     
+print(LDEAuto$var.classif)                                       #Show how the variables were clasiffied
+df.clean <- LDEAuto$df.filtered                                  #Retrieve the cleaned dataset
 ```
-<img src="https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/AutoProcess.png" width="700">
+LDE.AutoProcess() automatically generates descriptive statistics, removes unuseful variables (NA-only, 1-value-only, plain text and repeated info, excess NAs), then returns the cleaned and re-formatted dataset.
+
+<img src="https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/AutoProcess.png" width="200">
 
 
 
-### Preliminary Exploration of data.frame
+## Preliminary Exploration & descriptive statistics
 
-LDE.Explore(): Preliminary exploration and calculation of descriptive statistics [(More Info)](http://www.digitalmedtools.com/Freeware/LargeDataExplorer#Explore)
 ``` r
-Expl<-LDE.Explore(df)
-View(Expl$df.num) #View numeric variables statistics
-
-# You can also see Expl$df.bool, Expl$df.levels, Expl$df.category, Expl$df.onevalue, Expl$df.NA, 
-#   Expl$df.text, Expl$df.repeatedVars 
+LDEExplore <- LDE.Explore(df)
+View(LDEExplore$df.num)                                           #View the descriptive statistics
 ```
-Example of View(Expl$df.num)
-<img src="https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/Explore.png" width="700">
+LDE.Explore() classifies variables as bool, categorical, categorical (numeric), numeric, primary key, etc. Descriptive statistics are generated for each variable type.
+
+<img src="https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/Explore.png" width="200">
 
 
 
-### Filtering of the useful variables
+## Retrieve useful variables for analytics
 
-LDE.UsefulVars(): Selecting the useful variables: Booleans, numeric, categorical and primary keys [(More Info)](http://www.digitalmedtools.com/Freeware/LargeDataExplorer#UsefulVars)
 ``` r
-Expl1<-LDE.Explore(df.1)
-maxNARate<-0.2
-UsefulVarsObject<-LDE.UsefulVars(maxNARate,Expl1) #You can add only 1 Expl Object or as many as you want
-
-varsToInclude<-UsefulVarsObject$useful.varnames$df.1 #useful variable names for df.1
+#LDEExplore <- LDE.Explore(df.1)                                  #An LDE Exploration must have been performed first
+maxNARate <- 0.2                                                  #Values between 0-1
+LDEUsefulVars <- LDE.UsefulVars(maxNARate,LDEExplore)             #You can use 1 LDEExplore Objects or as many as you want
+varsToInclude<-LDEUsefulVars$useful.varnames$df.1                 #Retrieve a string vector with the useful variable names for df.1
 ```
+LDE.UsefulVars() identifies whether variables have unuseful information (Na-only, 1-value only, etc.). Returns variable names grouped by their usefulness.
+
 
 ## More information?
-- [Large Data Explorer Information](http://www.digitalmedtools.com/Freeware/LargeDataExplorer)
+- [Large Data Explorer Full Information](http://www.digitalmedtools.com/Freeware/LargeDataExplorer)
 - [More Free packages and apps](http://www.digitalmedtools.com/Freeware)
 - [Digital MedTools: Software & Services for Biomedic Researchers](http://www.digitalmedtools.com)
-- Example Dataset used: https://www.colombiacompra.gov.co/transparencia/conjuntos-de-datos-abiertos
+- Example dataset used: "SECOP 2", https://www.colombiacompra.gov.co/
 
 ## Author
 
