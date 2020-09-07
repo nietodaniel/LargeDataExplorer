@@ -21,22 +21,21 @@ library(LargeDataExplorer)
 
 ### LDE.AutoProcess(): Automatically explore, Filter relevant variables & Transform data.frame
 
-Exploring, filtering and transforming, just with 2 lines of code [More Info](http://www.digitalmedtools.com/Freeware/LargeDataExplorer#AutoProcess)
+Exploring, filtering and transforming, with a few lines of code [(More Info)](http://www.digitalmedtools.com/Freeware/LargeDataExplorer#AutoProcess)
 ``` r
 Expl<-LDE.AutoProcess(df)
-df.clean<-Expl$df.filtered #data.frame with only the useful variables
-
 print(Expl$var.classif) #How the variables were clasiffied
-```
+print(Expl$var.classif) #How the variables were clasiffied
 
-![LDE.AutoProcess()](/images/AutoProcess.png)
-Format: ![Alt Text](http://www.digitalmedtools.com/Freeware/LargeDataExplorer#AutoProcess)
+df.clean<-Expl$df.filtered #Filtered dataset
+```
+<img src="https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/AutoProcess.png" width="700">
 
 
 
 ### LDE.Explore(): Preliminary Exploration of data.frame
 
-Preliminary exploration and calculation of descriptive statistics [More Info](http://www.digitalmedtools.com/Freeware/LargeDataExplorer#Explore)
+Preliminary exploration and calculation of descriptive statistics [(More Info)](http://www.digitalmedtools.com/Freeware/LargeDataExplorer#Explore)
 ``` r
 Expl<-LDE.Explore(df)
 
@@ -52,15 +51,14 @@ View(Expl$df.NA) #Empty variables that only contain NAs
 View(Expl$df.text) #Plain text variables that contain too much categories to be considered categorical
 View(Expl$df.repeatedVars) #Numeric/Categorical variables that hold duplicated information, thus can be removed
 ```
-
-![LDE.Explore()](/images/Explore.png)
-Format: ![Alt Text](http://www.digitalmedtools.com/Freeware/LargeDataExplorer#Explore)
+Example of View(Expl$df.num)
+<img src="https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/Explore.png" width="700">
 
 
 
 ### LDE.UsefulVars(): Filtering of the useful variables
 
-Selecting the useful variables: Booleans, numeric, categorical and primary keys [More Info](http://www.digitalmedtools.com/Freeware/LargeDataExplorer#UsefulVars)
+Selecting the useful variables: Booleans, numeric, categorical and primary keys [(More Info)](http://www.digitalmedtools.com/Freeware/LargeDataExplorer#UsefulVars)
 ``` r
 Expl1<-LDE.Explore(df.1)
 Expl2<-LDE.Explore(df.2)
@@ -71,16 +69,11 @@ included.vars.df.1<-useful.vars$useful.varnames$df.1 #Getting the useful varname
 df.1<-df.1[ , (names(df.1) %in% included.vars.df.1)] #Selecting only the useful variables
 ```
 
-![LDE.UsefulVars()](/images/UsefulVars.png)
-Format: ![Alt Text](http://www.digitalmedtools.com/Freeware/LargeDataExplorer#UsefulVars)
-
-
-
 ## More information?
-
 - [Large Data Explorer Information](http://www.digitalmedtools.com/Freeware/LargeDataExplorer)
 - [More Free packages and apps](http://www.digitalmedtools.com/Freeware)
 - [Digital MedTools: Software & Services for Biomedic Researchers](http://www.digitalmedtools.com)
+- Example Dataset used: https://www.colombiacompra.gov.co/transparencia/conjuntos-de-datos-abiertos
 
 ## Author
 
