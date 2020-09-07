@@ -22,11 +22,12 @@ library(LargeDataExplorer)
 
 ``` r
 LDEAuto <- LDE.AutoProcess(df)     
-print(LDEAuto$var.classif)             #Show how the variables were clasiffied
-df.clean <- LDEAuto$df.filtered        #Retrieve the filtered dataset
+print(LDEAuto$var.classif)                                    #Show how the variables were clasiffied
+df.clean <- LDEAuto$df.filtered                               #Retrieve the filtered dataset
 ```
-LDE.AutoProcess(): Removes unuseful variables types: NA-only, 1-value-only, plain text and variables with reapeated information. [(More Info)](http://www.digitalmedtools.com/Freeware/LargeDataExplorer#AutoProcess) *Click the image to expand it*
-<img src="https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/AutoProcess.png" width="300">
+LDE.AutoProcess(): Removes unuseful variables types: NA-only, 1-value-only, plain text and variables with reapeated information. [(More Info)](http://www.digitalmedtools.com/Freeware/LargeDataExplorer#AutoProcess)
+
+<img src="https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/AutoProcess.png" width="300">*Click the image to expand it*
 
 
 
@@ -34,20 +35,21 @@ LDE.AutoProcess(): Removes unuseful variables types: NA-only, 1-value-only, plai
 
 ``` r
 LDEExplore <- LDE.Explore(df)
-View(LDEExplore$df.num)                #View the descriptive statistics
+View(LDEExplore$df.num)                                        #View the descriptive statistics
 ```
-LDE.Explore(): Classifies variables as bool, categorical, categorical (numeric), numeric, primary key, etc. [(More Info)](http://www.digitalmedtools.com/Freeware/LargeDataExplorer#Explore)  *Click the image to expand it*
-<img src="https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/Explore.png" width="300">
+LDE.Explore(): Classifies variables as bool, categorical, categorical (numeric), numeric, primary key, etc. [(More Info)](http://www.digitalmedtools.com/Freeware/LargeDataExplorer#Explore)
+
+<img src="https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/Explore.png" width="300">*Click the image to expand it*
 
 
 
 ### Filtering which variables might be useful
 
 ``` r
-LDEExplore <- LDE.Explore(df.1)                              #An LDE Exploration must be performed first
-maxNARate = 0.2                                              #Values between 0-1
-LDEUsefulVars <- LDE.UsefulVars(maxNARate,LDEExplore)        #You can 1 LDEExplore Objects or as many as you want
-varsToInclude<-LDEUsefulVars$useful.varnames$df.1            #Retrieve a string vector with the useful variable names for df.1
+LDEExplore <- LDE.Explore(df.1)                                #An LDE Exploration must be performed first
+maxNARate = 0.2                                                #Values between 0-1
+LDEUsefulVars <- LDE.UsefulVars(maxNARate,LDEExplore)          #You can 1 LDEExplore Objects or as many as you want
+varsToInclude<-LDEUsefulVars$useful.varnames$df.1              #Retrieve a string vector with the useful variable names for df.1
 ```
 LDE.UsefulVars(): Identifies variables with unuseful information (Na-only, 1-value only, etc.)  [(More Info)](http://www.digitalmedtools.com/Freeware/LargeDataExplorer#UsefulVars)
 
