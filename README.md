@@ -22,8 +22,8 @@ library(LargeDataExplorer)
 
 ``` r
 LDEAuto <- LDE.AutoProcess(df)     
-print(LDEAuto$var.classif)                                    #Show how the variables were clasiffied
-df.clean <- LDEAuto$df.filtered                               #Retrieve the filtered dataset
+print(LDEAuto$var.classif)                                       #Show how the variables were clasiffied
+df.clean <- LDEAuto$df.filtered                                  #Retrieve the filtered dataset
 ```
 LDE.AutoProcess(): Automatically generates descriptive statistics, removes unuseful variables (NA-only, 1-value-only, plain text and repeated info, excess NAs), then returns the cleaned and re-formatted dataset. [(More Info)](http://www.digitalmedtools.com/Freeware/LargeDataExplorer#AutoProcess)
 
@@ -35,7 +35,7 @@ LDE.AutoProcess(): Automatically generates descriptive statistics, removes unuse
 
 ``` r
 LDEExplore <- LDE.Explore(df)
-View(LDEExplore$df.num)                                        #View the descriptive statistics
+View(LDEExplore$df.num)                                           #View the descriptive statistics
 ```
 LDE.Explore(): Classifies variables as bool, categorical, categorical (numeric), numeric, primary key, etc. [(More Info)](http://www.digitalmedtools.com/Freeware/LargeDataExplorer#Explore)
 
@@ -46,10 +46,10 @@ LDE.Explore(): Classifies variables as bool, categorical, categorical (numeric),
 ## Retrieve useful variables for analytics
 
 ``` r
-LDEExplore <- LDE.Explore(df.1)                                #An LDE Exploration must be performed first
-maxNARate = 0.2                                                #Values between 0-1
-LDEUsefulVars <- LDE.UsefulVars(maxNARate,LDEExplore)          #You can 1 LDEExplore Objects or as many as you want
-varsToInclude<-LDEUsefulVars$useful.varnames$df.1              #Retrieve a string vector with the useful variable names for df.1
+#LDEExplore <- LDE.Explore(df.1)                                  #An LDE Exploration must have been performed first
+maxNARate <- 0.2                                                  #Values between 0-1
+LDEUsefulVars <- LDE.UsefulVars(maxNARate,LDEExplore)             #You can 1 LDEExplore Objects or as many as you want
+varsToInclude<-LDEUsefulVars$useful.varnames$df.1                 #Retrieve a string vector with the useful variable names for df.1
 ```
 LDE.UsefulVars(): Identifies whether variables have unuseful information (Na-only, 1-value only, etc.)  [(More Info)](http://www.digitalmedtools.com/Freeware/LargeDataExplorer#UsefulVars)
 
