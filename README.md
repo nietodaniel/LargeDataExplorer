@@ -24,9 +24,9 @@ library(LargeDataExplorer)
 ``` r
 LDEAuto <- LDE.AutoProcess(df)     
 print(LDEAuto$var.classif)                                       #Show how the variables were clasiffied
-df.clean <- LDEAuto$df.filtered                                  #Retrieve the filtered dataset
+df.clean <- LDEAuto$df.filtered                                  #Retrieve the cleaned dataset
 ```
-LDE.AutoProcess(): Automatically generates descriptive statistics, removes unuseful variables (NA-only, 1-value-only, plain text and repeated info, excess NAs), then returns the cleaned and re-formatted dataset.
+LDE.AutoProcess() automatically generates descriptive statistics, removes unuseful variables (NA-only, 1-value-only, plain text and repeated info, excess NAs), then returns the cleaned and re-formatted dataset.
 
 <img src="https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/AutoProcess.png" width="200">
 
@@ -38,7 +38,7 @@ LDE.AutoProcess(): Automatically generates descriptive statistics, removes unuse
 LDEExplore <- LDE.Explore(df)
 View(LDEExplore$df.num)                                           #View the descriptive statistics
 ```
-LDE.Explore(): Classifies variables as bool, categorical, categorical (numeric), numeric, primary key, etc. Descriptive statistics are generated for each variable type
+LDE.Explore() classifies variables as bool, categorical, categorical (numeric), numeric, primary key, etc. Descriptive statistics are generated for each variable type.
 
 <img src="https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/Explore.png" width="200">
 
@@ -52,7 +52,7 @@ maxNARate <- 0.2                                                  #Values betwee
 LDEUsefulVars <- LDE.UsefulVars(maxNARate,LDEExplore)             #You can use 1 LDEExplore Objects or as many as you want
 varsToInclude<-LDEUsefulVars$useful.varnames$df.1                 #Retrieve a string vector with the useful variable names for df.1
 ```
-LDE.UsefulVars(): Identifies whether variables have unuseful information (Na-only, 1-value only, etc.). Returns useful & unuseful variable names.
+LDE.UsefulVars() identifies whether variables have unuseful information (Na-only, 1-value only, etc.). Returns variable names grouped by their usefulness.
 
 
 ## More information?
