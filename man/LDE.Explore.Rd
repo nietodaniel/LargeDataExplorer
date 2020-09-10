@@ -2,45 +2,63 @@
 % Please edit documentation in R/Exports.R
 \name{LDE.Explore}
 \alias{LDE.Explore}
-\title{Variable exploration & descriptive statistics of a data.frame}
+\title{Variable exploration, classification & descriptive statistics of a data.frame}
 \usage{
-LDE.Explore(dat, keyNamesMatch = NULL)
+LDE.Explore(dat, maxNARate = NULL, keyNamesMatch = NULL)
 }
 \arguments{
 \item{dat}{data.frame}
+
+\item{maxNARate}{numeric vector 0-1. Variables with a higher rate of NAs
+will be excluded. Null to ignore}
 
 \item{keyNamesMatch}{string vector containing substrings to search at the
 start or end of each variable name to classify it as a key. Null to ignore}
 }
 \value{
-A list containing the descriptive statistics for each variable
-classified by its type
+A list containing the useful variables classified by its type with
+their descriptive statistics and a vector containing the useful variable names
 }
 \description{
 classifies variables of a data.frame by type (bool, categorical, text, numeric, key,
-etc.). Descriptive statistics (mean, min, max, sd, skewness, etc.) are generated for
-each variable.
+etc.) and by its usefulness for analytics (E.g. Na-only, #' 1-value only, plain text
+types are not useful). Descriptive statistics (mean, min, max, sd, skewness, etc.)
+are generated for each variable.
 }
 \examples{
+maxNARate <- 0.2                  #NA Threshold
+keyNamesMatch<-c("ID","KEY")      #var names that begin or end with id or key will be set as keys
+
 df <- data.frame(secop1.full)
 
-#Basic Exploring of the data.frame
-Explore.1.df <- LDE.Explore(df)
-#Using only substrings to identify variables names as keys
-keyNamesMatch<-c("ID","KEY")
-Explore.2.df <- LDE.Explore(df,keyNamesMatch)
+Explore.1.df <- LDE.Explore(df)                              #Basic Exploring
+Explore.2.df <- LDE.Explore(df,keyNamesMatch)                #Identifying keys
+Explore.3.df <- LDE.Explore(df,NULL,maxNARate)               #With a NAs threshold
+Explore.4.df <- LDE.Explore(df,keyNamesMatch,maxNARate)      #Identifying keys and NAs threshold
 
-#View which variables are of each type and its characteristics
-#View(Explore.2.df$df.text)          #Text type
-#View(Explore.2.df$df.num)           #Numeric type
-#View(Explore.2.df$df.NA)            #Empty variables
-#View(Explore.2.df$df.univalue)      #only one value type
-#View(Explore.2.df$df.category)      #Categorical (text) type
-#View(Explore.2.df$df.levels)        #categorical (numeric) type
-#View(Explore.2.df$df.bool)          #Bool type
-#View(Explore.2.df$df.primarykeys)   #Primary keys
-#View(Explore.2.df$df.keys)          #Keys
-#View(Explore.2.df$df.repeatedVars)  #With repeated information
+#See if variables were included or excluded
+#View(Explore.4.df$var.status$included) #included vars
+#View(Explore.4.df$var.status$excluded) #excluded vars
+
+#See how the included variables were classified E.g.:
+#View(Explore.4.df$var.classif$included.vars$df.num) #numeric variables
+#View(Explore.4.df$var.classif$included.vars$df.bool) #boolean variables
+
+#See how the excluded variables were classified E.g.:
+#View(Explore.4.df$var.classif$removed.vars$not.useful) #excluded by type
+#View(Explore.4.df$var.classif$removed.vars$filtered.byNAs) #excluded by NA rate
+#View(Explore.4.df$var.classif$removed.vars$not.useful$df.NA) #excluded by type, empty
+#View(Explore.4.df$var.classif$removed.vars$filtered.byNAs$df.num) #numeric, excluded by NA rate
+
+#See statistics of variables by exclusion reason
+#View(Explore.4.df$statistics$useful.vars) #included
+#View(Explore.4.df$statistics$filteredbyNAs.vars) #excluded by NA rate
+#View(Explore.4.df$statistics$unuseful.vars) #excluded by type
+
+#See statistics of variables by exclusion reason and type E.g.:
+#View(Explore.4.df$statistics$useful.vars$df.levels) #included, type level
+#View(Explore.4.df$statistics$filteredbyNAs.vars$df.num) #numeric, excluded by NA rate
+#View(Explore.4.df$statistics$unuseful.vars$df.NA) #excluded, type empty
 }
 \author{
 Daniel Nieto

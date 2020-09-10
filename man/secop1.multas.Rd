@@ -5,7 +5,7 @@
 \alias{secop1.multas}
 \title{Fines and sanctions dataset. Each row is a fine.}
 \format{
-An object of class \code{spec_tbl_df} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 699 rows and 12 columns.
+An object of class \code{spec_tbl_df} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 1442 rows and 12 columns.
 }
 \usage{
 secop1.multas

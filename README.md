@@ -18,44 +18,34 @@ devtools::install_github("nietodaniel/LargeDataExplorer")
 library(LargeDataExplorer)
 ```
 
-## Variable exploration & descriptive statistics
+## Variable exploration & classification, and descriptive statistics
+
+LDE.Explore() classifies variables of a data.frame by type (bool, categorical, text, numeric, key, etc) and assess whether variables are useful or not for analytics (E.g. Na-only, 1-value only, plain text types are not useful) and if there's a NA threshold that should be reason of exclusion. Descriptive statistics are generated for each variable.
 
 ``` r
-Explore.df.1 <- LDE.Explore(df.1,keyNamesMatch)                   #With LDE.AutoProcess(df,c("key","id,"code")) You can  tell LargeDataExplorer to assign variables that start or end with "key", "id" and "code" as key type. Null to ignore.
-View(Explore.df.1$df.num)                                         #View the descriptive statistics for numeric variables. You can also see $df.levels, $df.category,
+df<-secop1.full                                                                            #secop1.full and secop1.multas are example datasets of government purchases included in this package. See full package info
+
+keyNamesMatch <- c("key","id")                                                             #Variable names that start or end with these strings will be asigned as keys. E.g. c("key","id,"code"). String vector, or NULL to ignore.
+Explore.df <- LDE.Explore(df,keyNamesMatch)                                                #To set a NA limit. You can use LDE.Explore(df,keyNamesMatch,maxNARate). Numeric values between 0-1 are permited
 ```
-LDE.Explore() classifies variables of a data.frame by type (bool, categorical, text, numeric, key, etc). Descriptive statistics are generated for each variable.
-
-<img src="https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/Explore.png" width="200">
-
-## Retrieving useful variables for analytics
-
-``` r
-maxNARate <- 0.2                                                  #Values between 0-1. It can be set as null if you don't want to filter by NAs
-Usefulness.df.1 <- LDE.UsefulVars(maxNARate,Explore.df.1)         #Each Explore.df is an LDE.Explore() Object. You can use 1 or as many as you want E.g. LDE.UsefulVars(maxNARate,Explore.df.1,Explore.df.2,Explore.df.3).  Null to ignore.
-
-print(Usefulness.df.1$statistics)                                 #See statistics of included and excluded variables
-print(Usefulness.df.1f$var.status)                                #See whether the variables were excluded or not
-print(Usefulness.df.1$var.classif)                                #Show how the variables were clasiffied and why excluded variables were excluded
-```
-LDE.UsefulVars() classifies variables by its type and usefulness for analytics (E.g. Na-only, 1-value only, plain text types are not useful). It also includes descriptive statistics for each included and excluded variable
-
+  Explore.df$statistics      |  Explore.df$var.status    |  Explore.df$classif
+:---------------------------:|:-------------------------:|:-------------------------:
+<img src="https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/Explore.png" width="200">   |  <img src="https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/Status.png" width="200">   |  <img src="https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/Classif.png" width="200">
 
 ## Automatical exploration, variable filtering & re-formatting
 
-``` r
-Auto.1.df <- LDE.AutoProcess(df)                                  #With LDE.AutoProcess(df,c("key","id,"code")) You can  tell LargeDataExplorer to assign variables that start or end with "key", "id" and "code" as key type
-df.clean <- Auto.1.df$df.filtered                                 #Retrieve the cleaned dataset
-```
-LDE.AutoProcess() automatically performs LDE.Explore() and then LDE.UsefulVars(), finally returns the transformed dataset, excluding the unuseful variables, and the $statistics $var.status and $var.classif of LDE.UsefulVars()
+LDE.AutoProcess() automatically fixes the variable types and excludes variables based on the criteria of LDE.Explore()
 
+``` r
+df<-secop1.full   
+Auto.df <- LDE.AutoProcess(df)                                                             #You can use LDE.Explore(df.1,maxNARate,keyNamesMatch). See full package info
+df.clean <- Auto.df$df.filtered                                           
+```
 <img src="https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/AutoProcess.png" width="200">
 
-## More information?
-- [Large Data Explorer Full Information](http://www.digitalmedtools.com/Freeware/LargeDataExplorer)
+## More
 - [More Free packages and apps](http://www.digitalmedtools.com/Freeware)
 - [Digital MedTools: Software & Services for Biomedic Researchers](http://www.digitalmedtools.com)
-- Example dataset used: "SECOP 2", https://www.colombiacompra.gov.co/
 
 ## Author
 

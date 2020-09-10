@@ -2,4 +2,3 @@
 
 export(LDE.AutoProcess)
 export(LDE.Explore)
-export(LDE.UsefulVars)

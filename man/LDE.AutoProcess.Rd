@@ -33,13 +33,13 @@ keyNamesMatch<-c("ID","KEY")
 Auto.1.df <- LDE.AutoProcess(df)
 
 #Using a Max Rate of NA per variable
-Auto.2.df <- LDE.AutoProcess(df,maxNARate)
+Auto.2.df <- LDE.AutoProcess(df,NULL,maxNARate)
 
 #Using substrings to identify variables names as keys, but without NAs filtering
-Auto.3.df <- LDE.AutoProcess(df,NULL,keyNamesMatch)
+Auto.3.df <- LDE.AutoProcess(df,keyNamesMatch)
 
 #Using Max Rate of NAs and substrings to identify variables names as keys
-Auto.4.df <- LDE.AutoProcess(df,maxNARate,keyNamesMatch)
+Auto.4.df <- LDE.AutoProcess(df,keyNamesMatch,maxNARate)
 
 #Obtention of the cleaned dataset
 df.clean<-Auto.4.df$df.filtered
