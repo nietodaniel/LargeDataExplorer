@@ -28,11 +28,13 @@ df<-secop1.full                                                                 
 keyNamesMatch <- c("key","id")                                                             #Variable names that start or end with these strings will be asigned as keys. E.g. c("key","id,"code"). String vector, or NULL to ignore.
 Explore.df <- LDE.Explore(df,keyNamesMatch)                                                #To set a NA limit. You can use LDE.Explore(df,keyNamesMatch,maxNARate). Numeric values between 0-1 are permited
   
-print(Explore.df.1$statistics)                                                             #See statistics of included and excluded vars. 
-print(Explore.df.1f$var.status)                                                            #Variable names of included and excluded vars
-print(Explore.df.1$var.classif)                                                            #Show how the variables were clasiffied and exclusion reasons.
+print(Explore.df$statistics)                                                               #See statistics of included and excluded vars. 
+print(Explore.dff$var.status)                                                              #Variable names of included and excluded vars
+print(Explore.df$var.classif)                                                              #Show how the variables were clasiffied and exclusion reasons.
 ```
 <img src="https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/Explore.png" width="200">
+<img src="https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/Status.png" width="200">
+<img src="https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/Classif.png" width="200">
 
 ## Automatical exploration, variable filtering & re-formatting
 
@@ -45,8 +47,7 @@ df.clean <- Auto.df$df.filtered
 ```
 <img src="https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/AutoProcess.png" width="200">
 
-## More information?
-- [Large Data Explorer Full Information](http://www.digitalmedtools.com/Freeware/LargeDataExplorer)
+## More
 - [More Free packages and apps](http://www.digitalmedtools.com/Freeware)
 - [Digital MedTools: Software & Services for Biomedic Researchers](http://www.digitalmedtools.com)
 
