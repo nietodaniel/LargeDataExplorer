@@ -2,35 +2,71 @@
 % Please edit documentation in R/Exports.R
 \name{LDE.AutoProcess}
 \alias{LDE.AutoProcess}
-\title{data.frame automatic exploration, filtering and format transformation}
+\title{Automatical exploration, variable filtering & re-formatting of a data.frame}
 \usage{
-LDE.AutoProcess(dat, maxNARate = NULL)
+LDE.AutoProcess(dat, maxNARate = NULL, keyNamesMatch = NULL)
 }
 \arguments{
 \item{dat}{data.frame}
 
-\item{maxNARate}{numeric vector 0-1. Null to ignore}
+\item{maxNARate}{numeric vector 0-1. Variables with a higher rate of NAs
+will be excluded. Null to ignore}
+
+\item{keyNamesMatch}{string vector containing substrings to search at the
+start or end of each variable name to classify it as a key. Null to ignore}
 }
 \value{
 The filtered dataset, with re-formatted variables and all the
 process information including descriptive statistics
 }
 \description{
-Automatically removes unuseful variables (Empty, plain text, one-value,
-with repeated information) and variables with excess NAs.
+Automatically performs LDE.Explore() and then LDE.UsefulVars(), finally
+returns the transformed dataset, excluding the unuseful variables, and
+the $statistics $var.status and $var.classif of LDE.UsefulVars()
 }
 \examples{
-dat <- data.frame(iris)
-maxNARate = 0.2
-Exploration.dat <- LDE.AutoProcess(dat,maxNARate)
+df <- data.frame(secop1.full)
+maxNARate <- 0.2
+keyNamesMatch<-c("ID","KEY")
 
-#View all the process information
-#Includes descriptive statistics for each variable
-str(Exploration.dat$process.info)
+#Basic AutoProcess of the data.frame
+Auto.1.df <- LDE.AutoProcess(df)
 
-#Obtains clean dataset
-dat.clean<-Exploration.dat$df.filtered
-str(dat.clean)
+#Using a Max Rate of NA per variable
+Auto.2.df <- LDE.AutoProcess(df,maxNARate)
+
+#Using substrings to identify variables names as keys, but without NAs filtering
+Auto.3.df <- LDE.AutoProcess(df,NULL,keyNamesMatch)
+
+#Using Max Rate of NAs and substrings to identify variables names as keys
+Auto.4.df <- LDE.AutoProcess(df,maxNARate,keyNamesMatch)
+
+#Obtention of the cleaned dataset
+df.clean<-Auto.4.df$df.filtered
+
+#See if variables were included or excluded
+#View(Auto.4.df$var.status$included) #included vars
+#View(Auto.4.df$var.status$excluded) #excluded vars
+
+#See how the included variables were classified E.g.:
+#View(Auto.4.df$var.classif$included.vars$df.num)  #numeric vars
+#View(Auto.4.df$var.classif$included.vars$df.bool) #boolean vas
+
+#See how the excluded variables were classified E.g.:
+#View(Auto.4.df$var.classif$removed.vars$not.useful)            #excluded by type
+#View(Auto.4.df$var.classif$removed.vars$filtered.byNAs)        #excluded by NA rate
+#View(Auto.4.df$var.classif$removed.vars$not.useful$df.NA)      #excluded by type, empty
+#View(Auto.4.df$var.classif$removed.vars$filtered.byNAs$df.num) #numeric excluded by NA rate
+
+#See statistics of variables by exclusion reason
+#View(Auto.4.df$statistics$useful.vars)        #included
+#View(Auto.4.df$statistics$filteredbyNAs.vars) #excluded by NAs
+#View(Auto.4.df$statistics$unuseful.vars)      #excluded by type
+
+#See statistics of variables by exclusion reason and type E.g.:
+#View(Auto.4.df$statistics$useful.vars$df.levels)     #included that were levels
+#View(Auto.4.df$statistics$filteredbyNAs.vars$df.num) #numeric, excluded by NA rate
+#View(Auto.4.df$statistics$unuseful.vars$df.NA)       #excluded by type, empty vars
 }
 \author{
 Daniel Nieto

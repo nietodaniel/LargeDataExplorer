@@ -35,7 +35,7 @@ internalfun.Summary.num <- function(colnum,colname,vec,dataname,dataset) {
   return(dataset)
 }
 
-internalfun.Summary.bool <- function(colnum,colname,vec,dataname,dataset) {
+internalfun.Summary.bool.base <- function(colnum,colname,vec,dataname) {
   NAResult<-100*sum(is.na(vec))/length(vec)
   vec <- vec[!is.na(vec)]
   vec<-as.factor(vec)
@@ -59,6 +59,11 @@ internalfun.Summary.bool <- function(colnum,colname,vec,dataname,dataset) {
   res$sd<-imports.sd(vec)
   res$sdCategory<-imports.sd(vec2)
   res$NAPercent<-NAResult
+  return(res)
+}
+
+internalfun.Summary.bool <- function(colnum,colname,vec,dataname,dataset) {
+  res<-internalfun.Summary.bool.base(colnum,colname,vec,dataname)
   dataset=internalfun.MixTableNResult(dataset,res)
   return(dataset)
 }
@@ -137,7 +142,18 @@ internalfun.isEntire<-function(vec){
   return(res)
 }
 
-internalfun.SummType<-function(vec,varname){
+internalfun.findAtBegginingorEnd<-function(varname,keyNamesMatch){
+  varname=tolower(varname)
+  keyNamesMatch=tolower(keyNamesMatch)
+  for(keymatch in keyNamesMatch){
+    wordlen = nchar(keymatch)
+    if(substr(varname, start = 1, stop = wordlen)==keymatch | substr(varname, nchar(varname)-wordlen+1, nchar(varname))==keymatch)
+      return(TRUE)
+  }
+  return(FALSE)
+}
+
+internalfun.SummType<-function(vec,varname,keyNamesMatch){
   if(sum(is.na(vec))==length(vec)){
     return(-1) #df.NA
   }
@@ -145,17 +161,18 @@ internalfun.SummType<-function(vec,varname){
   if(length(vec)==length(unique(vec))){
     return(5) #primary key
   }
-  if(substr(varname, start = 1, stop = 2)=="ID" | substr(varname, start = 1, stop = 3)=="COD" || substr(varname, start = nchar(varname)-1, stop = nchar(varname))=="ID")
-    return(6) #key
   rrr<-table(vec)
   if(length(rrr)==1){
     return(-2) #df.univalue
   }
+  keyNamesMatch=c("ID","COD",keyNamesMatch)
+  if(internalfun.findAtBegginingorEnd(varname,keyNamesMatch)==TRUE)
+    return(6) #key
   if(length(rrr)==2){
-    return(3) #df.univalue
+    return(3) #df.boolean
   }
   if(is.numeric(vec) || internalfun.can.be.numeric(vec)){
-    if((length(rrr)<(100)) & internalfun.isEntire(vec)){
+    if((length(rrr)<(100)) & internalfun.isEntire(as.numeric(vec))){
       return(2) #df.levels
     }
     return(0)
@@ -205,6 +222,20 @@ internalfun.VarTypeName<-function(type){
   if(type==6){
     return("key")
   }
+}
+
+internalfun.findVarnames<-function(df.withvarname){
+  if(!is.null(df.withvarname) & length(df.withvarname)>0)
+    return(df.withvarname$varname)
+  return(c())
+}
+
+internalfun.removeRowNames<-function(df){
+  if(!is.null(df) & length(df)>0){
+    rownames(df)<-NULL
+    return(df)
+  }
+  return(NULL)
 }
 
 internalfun.findVarname<-function(index,df.summ){
@@ -268,7 +299,14 @@ internalfun.seekRepeated<-function(df.repeated,isCategory,dat1,dat2=NULL,dat2b=N
 }
 
 internalfun.UsefulVars.filter<-function(filter.vars,df,maxNApercentage){
-  if(filter.vars==TRUE)
-    df=df[df$NAPercent<maxNApercentage,]
-  return(df)
+  if(is.null(df) | length(df)==0)
+    return(list("filtered.df"=NULL,"excluded.df"=NULL))
+  if(filter.vars==TRUE){
+    filtered.df=df[df$NAPercent<maxNApercentage,]
+    excluded.df=df[!(df$NAPercent<maxNApercentage),]
+  }else{
+    filtered.df=df
+    excluded.df=NULL
+  }
+  return(list("filtered.df"=filtered.df,"excluded.df"=excluded.df))
 }
