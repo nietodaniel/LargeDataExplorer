@@ -2,12 +2,13 @@
 % Please edit documentation in R/Exports.R
 \name{LDE.UsefulVars}
 \alias{LDE.UsefulVars}
-\title{useful variables selection}
+\title{Retrieving useful variables for analytics}
 \usage{
 LDE.UsefulVars(maxNARate = NULL, LDE.ExploreObject, ...)
 }
 \arguments{
-\item{maxNARate}{numeric vector 0-1. Null to ignore}
+\item{maxNARate}{numeric vector 0-1. Variables with a higher rate of NAs
+will be excluded. Null to ignore}
 
 \item{LDE.ExploreObject}{LDE.Explore() Object}
 
@@ -18,29 +19,50 @@ A list containing the useful variables classified by its type with
 their descriptive statistics and a vector containing the useful variable names
 }
 \description{
-After performing LDE.Explore(), the output can be filtered to
-obtain only the useful varibles and the variables names in a vector. A
-max rate of NAs (0-1) can be set to filther further
+Classifies variables by its type and usefulness for analytics (E.g. Na-only,
+1-value only, plain text types are not useful). It also includes descriptive
+statistics for each included and excluded variable.
 }
 \examples{
-df.iris <- data.frame(iris)
-df.cars <- data.frame(cars)
-Explore.iris <- LDE.Explore(df.iris)
-Explore.cars <- LDE.Explore(df.cars)
-maxNARate <- 0.2 #All variables with more than 20\% of NAs will be excluded
-usefulVars <- LDE.UsefulVars(maxNARate,Explore.iris,Explore.cars)
+df1 <- data.frame(secop1.full)
+df2 <- data.frame(secop1.multas)
+Explore.df1 <- LDE.Explore(df1)
+Explore.df2 <- LDE.Explore(df2)
 
-#Useful Variables --> usefulVars$varnames
-str(usefulVars$varnames$df.iris) #Useful varnames of Iris dataset
-str(usefulVars$varnames$df.cars) #Useful varnames of Cars dataset
+maxNARate <- 0.2
 
-#View useful variables of each dataset and its characteristics
-str(usefulVars$df.num) #Variables of numeric type
-str(usefulVars$df.category) #Variables of categorical (text) type
-str(usefulVars$df.bool) #Variables of bool type
-str(usefulVars$df.levels) #Variables of categorical (numeric) type
-str(usefulVars$df.primarykeys) #Variables which could be primary keys
-str(usefulVars$df.keys) #Variables which could be keys
+#Basic variable filtering of a single dataset exploration
+Usefulness.1.df1 <- LDE.UsefulVars(NULL,Explore.df1)
+
+#Basic variable filtering of a multiple datasets explortaions
+Usefulness.1 <- LDE.UsefulVars(NULL,Explore.df1,Explore.df2)
+
+#Variable filtering, including NA threshold, using multiple datasets explortaions
+Usefulness.2 <- LDE.UsefulVars(maxNARate,Explore.df1,Explore.df2)
+
+#df1: See if variables were included or excluded
+#View(Usefulness.2$var.status$df1$included) #included vars
+#View(Usefulness.2$var.status$df1$excluded) #excluded vars
+
+#df1: See how the included variables were classified E.g.:
+#View(Usefulness.2$var.classif$df1$included.vars$df.num) #numeric variables
+#View(Usefulness.2$var.classif$df1$included.vars$df.bool) #boolean variables
+
+#df1: See how the excluded variables were classified E.g.:
+#View(Usefulness.2$var.classif$df1$removed.vars$not.useful) #excluded by type
+#View(Usefulness.2$var.classif$df1$removed.vars$filtered.byNAs) #excluded by NA rate
+#View(Usefulness.2$var.classif$df1$removed.vars$not.useful$df.NA) #excluded by type, empty
+#View(Usefulness.2$var.classif$df1$removed.vars$filtered.byNAs$df.num) #numeric, excluded by NA rate
+
+#df1: See statistics of variables by exclusion reason
+#View(Usefulness.2$statistics$df1$useful.vars) #included
+#View(Usefulness.2$statistics$df1$filteredbyNAs.vars) #excluded by NA rate
+#View(Usefulness.2$statistics$df1$unuseful.vars) #excluded by type
+
+#df1: See statistics of variables by exclusion reason and type E.g.:
+#View(Usefulness.2$statistics$df1$useful.vars$df.levels) #included, type level
+#View(Usefulness.2$statistics$df1$filteredbyNAs.vars$df.num) #numeric, excluded by NA rate
+#View(Usefulness.2$statistics$df1$unuseful.vars$df.NA) #excluded, type empty
 }
 \author{
 Daniel Nieto

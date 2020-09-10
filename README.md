@@ -18,42 +18,38 @@ devtools::install_github("nietodaniel/LargeDataExplorer")
 library(LargeDataExplorer)
 ```
 
+## Variable exploration & descriptive statistics
+
+``` r
+Explore.df.1 <- LDE.Explore(df.1,keyNamesMatch)                   #With LDE.AutoProcess(df,c("key","id,"code")) You can  tell LargeDataExplorer to assign variables that start or end with "key", "id" and "code" as key type. Null to ignore.
+View(Explore.df.1$df.num)                                         #View the descriptive statistics for numeric variables. You can also see $df.levels, $df.category,
+```
+LDE.Explore() classifies variables of a data.frame by type (bool, categorical, text, numeric, key, etc). Descriptive statistics are generated for each variable.
+
+<img src="https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/Explore.png" width="200">
+
+## Retrieving useful variables for analytics
+
+``` r
+maxNARate <- 0.2                                                  #Values between 0-1. It can be set as null if you don't want to filter by NAs
+Usefulness.df.1 <- LDE.UsefulVars(maxNARate,Explore.df.1)         #Each Explore.df is an LDE.Explore() Object. You can use 1 or as many as you want E.g. LDE.UsefulVars(maxNARate,Explore.df.1,Explore.df.2,Explore.df.3).  Null to ignore.
+
+print(Usefulness.df.1$statistics)                                 #See statistics of included and excluded variables
+print(Usefulness.df.1f$var.status)                                #See whether the variables were excluded or not
+print(Usefulness.df.1$var.classif)                                #Show how the variables were clasiffied and why excluded variables were excluded
+```
+LDE.UsefulVars() classifies variables by its type and usefulness for analytics (E.g. Na-only, 1-value only, plain text types are not useful). It also includes descriptive statistics for each included and excluded variable
+
 
 ## Automatical exploration, variable filtering & re-formatting
 
 ``` r
-LDEAuto <- LDE.AutoProcess(df)     
-print(LDEAuto$var.classif)                                       #Show how the variables were clasiffied
-df.clean <- LDEAuto$df.filtered                                  #Retrieve the cleaned dataset
+Auto.1.df <- LDE.AutoProcess(df)                                  #With LDE.AutoProcess(df,c("key","id,"code")) You can  tell LargeDataExplorer to assign variables that start or end with "key", "id" and "code" as key type
+df.clean <- Auto.1.df$df.filtered                                 #Retrieve the cleaned dataset
 ```
-LDE.AutoProcess() automatically generates descriptive statistics, removes unuseful variables (NA-only, 1-value-only, plain text and repeated info, excess NAs), then returns the cleaned and re-formatted dataset.
+LDE.AutoProcess() automatically performs LDE.Explore() and then LDE.UsefulVars(), finally returns the transformed dataset, excluding the unuseful variables, and the $statistics $var.status and $var.classif of LDE.UsefulVars()
 
 <img src="https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/AutoProcess.png" width="200">
-
-
-
-## Preliminary Exploration & descriptive statistics
-
-``` r
-LDEExplore <- LDE.Explore(df)
-View(LDEExplore$df.num)                                           #View the descriptive statistics
-```
-LDE.Explore() classifies variables as bool, categorical, categorical (numeric), numeric, primary key, etc. Descriptive statistics are generated for each variable type.
-
-<img src="https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/Explore.png" width="200">
-
-
-
-## Retrieve useful variables for analytics
-
-``` r
-#LDEExplore <- LDE.Explore(df.1)                                  #An LDE Exploration must have been performed first
-maxNARate <- 0.2                                                  #Values between 0-1
-LDEUsefulVars <- LDE.UsefulVars(maxNARate,LDEExplore)             #You can use 1 LDEExplore Objects or as many as you want
-varsToInclude<-LDEUsefulVars$useful.varnames$df.1                 #Retrieve a string vector with the useful variable names for df.1
-```
-LDE.UsefulVars() identifies whether variables have unuseful information (Na-only, 1-value only, etc.). Returns variable names grouped by their usefulness.
-
 
 ## More information?
 - [Large Data Explorer Full Information](http://www.digitalmedtools.com/Freeware/LargeDataExplorer)

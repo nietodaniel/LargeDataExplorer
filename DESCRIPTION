@@ -22,3 +22,5 @@ BugReports: https://github.com/nietodaniel/LargeDataExplorer/issues
 Suggests: 
     testthat,
     covr
+Depends: 
+    R (>= 2.10)

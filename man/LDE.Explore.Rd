@@ -2,37 +2,45 @@
 % Please edit documentation in R/Exports.R
 \name{LDE.Explore}
 \alias{LDE.Explore}
-\title{data.frame preliminar exploration}
+\title{Variable exploration & descriptive statistics of a data.frame}
 \usage{
-LDE.Explore(dat)
+LDE.Explore(dat, keyNamesMatch = NULL)
 }
 \arguments{
 \item{dat}{data.frame}
+
+\item{keyNamesMatch}{string vector containing substrings to search at the
+start or end of each variable name to classify it as a key. Null to ignore}
 }
 \value{
-A list containing the variables classified by its type and their
-descriptive statistics
+A list containing the descriptive statistics for each variable
+classified by its type
 }
 \description{
-classifies a data.frame variables by type (numeric, categorical, boolean,
-text, etc.) and performs descriptive statistics for each (mean, min, max,
-sd, skewness, etc).
+classifies variables of a data.frame by type (bool, categorical, text, numeric, key,
+etc.). Descriptive statistics (mean, min, max, sd, skewness, etc.) are generated for
+each variable.
 }
 \examples{
-df <- data.frame(iris)
-Explore.df <- LDE.Explore(df)
+df <- data.frame(secop1.full)
+
+#Basic Exploring of the data.frame
+Explore.1.df <- LDE.Explore(df)
+#Using only substrings to identify variables names as keys
+keyNamesMatch<-c("ID","KEY")
+Explore.2.df <- LDE.Explore(df,keyNamesMatch)
 
 #View which variables are of each type and its characteristics
-str(Explore.df$df.text) #Variables of text type
-str(Explore.df$df.num) #Variables of numeric type
-str(Explore.df$df.NA) #Empty variables
-str(Explore.df$df.univalue) #Variables with only one value
-str(Explore.df$df.category) #Variables of categorical (text) type
-str(Explore.df$df.levels) #Variables of categorical (numeric) type
-str(Explore.df$df.bool) #Variables of bool type
-str(Explore.df$df.primarykeys) #Variables which could be primary keys
-str(Explore.df$df.keys) #Variables which could be keys
-str(Explore.df$df.repeatedVars) #Variables with repeated information
+#View(Explore.2.df$df.text)          #Text type
+#View(Explore.2.df$df.num)           #Numeric type
+#View(Explore.2.df$df.NA)            #Empty variables
+#View(Explore.2.df$df.univalue)      #only one value type
+#View(Explore.2.df$df.category)      #Categorical (text) type
+#View(Explore.2.df$df.levels)        #categorical (numeric) type
+#View(Explore.2.df$df.bool)          #Bool type
+#View(Explore.2.df$df.primarykeys)   #Primary keys
+#View(Explore.2.df$df.keys)          #Keys
+#View(Explore.2.df$df.repeatedVars)  #With repeated information
 }
 \author{
 Daniel Nieto
