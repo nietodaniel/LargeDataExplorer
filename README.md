@@ -28,8 +28,8 @@ df<-secop1.full                                                                 
 keyNamesMatch <- c("key","id")                                                             #Variable names that start or end with these strings will be asigned as keys. E.g. c("key","id,"code"). String vector, or NULL to ignore.
 Explore.df <- LDE.Explore(df,keyNamesMatch)                                                #To set a NA limit. You can use LDE.Explore(df,keyNamesMatch,maxNARate). Numeric values between 0-1 are permited
 ```
-  Explore.df$statistics      |  Explore.df$var.status    |  Explore.df$classif
-:---------------------------:|:-------------------------:|:-------------------------:
+    Explore.df$statistics      |    Explore.df$var.status    |    Explore.df$classif
+:-----------------------------:|:---------------------------:|:---------------------------:
 <img src="https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/Explore.png" width="200">   |  <img src="https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/Status.png" width="200">   |  <img src="https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/Classif.png" width="200">
 
 ## Automatical exploration, variable filtering & re-formatting
