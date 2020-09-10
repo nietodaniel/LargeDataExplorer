@@ -5,7 +5,7 @@
 \alias{secop1.full}
 \title{State contracts dataset. Each row is a state procurement process.}
 \format{
-An object of class \code{spec_tbl_df} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 200 rows and 72 columns.
+An object of class \code{spec_tbl_df} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 7349 rows and 72 columns.
 }
 \usage{
 secop1.full
