@@ -53,7 +53,7 @@ LDE.Explore<-function(dat,maxNARate=NULL,keyNamesMatch=NULL){
     stop("Error: data is null")
   }
   dataname=deparse(substitute(dat))
-  return(core.ExploreFull(dat,dataname,maxNARate,keyNamesMatch))
+  return(main.ExploreFull(dat,dataname,maxNARate,keyNamesMatch))
 }
 
 #' Automatical exploration, variable filtering & re-formatting of a data.frame
@@ -63,7 +63,8 @@ LDE.Explore<-function(dat,maxNARate=NULL,keyNamesMatch=NULL){
 #' the $statistics $var.status and $var.classif of LDE.UsefulVars()
 #'
 #' @param dat data.frame
-
+#' @param maxNARate numeric vector 0-1. Variables with a higher rate of NAs
+#' will be excluded. Null to ignore
 #' @param keyNamesMatch string vector containing substrings to search at the
 #' start or end of each variable name to classify it as a key. Null to ignore
 #' @return The filtered dataset, with re-formatted variables and all the
@@ -79,13 +80,13 @@ LDE.Explore<-function(dat,maxNARate=NULL,keyNamesMatch=NULL){
 #' Auto.1.df <- LDE.AutoProcess(df)
 #'
 #' #Using a Max Rate of NA per variable
-#' Auto.2.df <- LDE.AutoProcess(df,maxNARate)
+#' Auto.2.df <- LDE.AutoProcess(df,NULL,maxNARate)
 #'
 #' #Using substrings to identify variables names as keys, but without NAs filtering
-#' Auto.3.df <- LDE.AutoProcess(df,NULL,keyNamesMatch)
+#' Auto.3.df <- LDE.AutoProcess(df,keyNamesMatch)
 #'
 #' #Using Max Rate of NAs and substrings to identify variables names as keys
-#' Auto.4.df <- LDE.AutoProcess(df,maxNARate,keyNamesMatch)
+#' Auto.4.df <- LDE.AutoProcess(df,keyNamesMatch,maxNARate)
 #'
 #' #Obtention of the cleaned dataset
 #' df.clean<-Auto.4.df$df.filtered
@@ -118,5 +119,5 @@ LDE.AutoProcess<-function(dat,maxNARate=NULL,keyNamesMatch=NULL){
     stop("Error: data is null")
   }
   dataname=deparse(substitute(dat))
-  return(core.AutoProcess(dat,dataname,maxNARate,keyNamesMatch))
+  return(main.AutoProcess(dat,dataname,maxNARate,keyNamesMatch))
 }

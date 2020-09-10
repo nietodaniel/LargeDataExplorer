@@ -195,7 +195,14 @@ core.ExploreDataset<-function(dat1,dataname1,keyNamesMatch){
   return(list("dataname"=dataname1,"df.keys"=df.keys,"df.repeatedVars"=df.repeatedVars,"df.primarykeys"=df.primarykeys,"df.bool"=df.bool,"df.levels"=df.levels,"df.category"=df.category,"df.onevalue"=df.onevalue,"df.NA"=df.NA,"df.num"=df.num,"df.text"=df.text))
 }
 
-core.ExploreFull<-function(dat,dataname,keyNamesMatch,maxNARate){
+################################################
+################################################
+################################################
+################################################
+################################################
+################################################
+
+main.ExploreFull<-function(dat,dataname,keyNamesMatch,maxNARate){
   if(ncol(dat)<2 || ncol(dat)<2){
     stop(paste0(dataname," is not a data.frame"))
   }
@@ -213,13 +220,9 @@ core.ExploreFull<-function(dat,dataname,keyNamesMatch,maxNARate){
   return(list("statistics"=tmp.UsefulVars$statistics[[dataname]],"var.classif"=tmp.UsefulVars$var.classif[[dataname]],"var.status"=tmp.UsefulVars$var.status[[dataname]]))
 }
 
-
-
-
-
-core.AutoProcess<-function(dat,dataname,keyNamesMatch,maxNARate){
-  res=core.ExploreFull(dat,dataname,keyNamesMatch,maxNARate)
-
+main.AutoProcess<-function(dat,dataname,keyNamesMatch,maxNARate){
+  res=main.ExploreFull(dat,dataname,keyNamesMatch,maxNARate)
+  dat=data.frame(dat)
   included.vars<-res$var.status$included
   dat.filtered<-subset(dat,select=included.vars)
   ### Unuseful variable removal and type transformation

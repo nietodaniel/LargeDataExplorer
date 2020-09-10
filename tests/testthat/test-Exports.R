@@ -1,6 +1,6 @@
 test_that("Explore iris work", {
   RESULT=FALSE
-  dat <- data.frame(iris)
+  dat <- (iris)
 
   Explore <- LDE.Explore(dat)
 
@@ -12,7 +12,7 @@ test_that("Explore iris work", {
 
 test_that("Explore key-iris work", {
   RESULT=FALSE
-  dat <- data.frame(iris)
+  dat <- (iris)
 
   keyNamesMatch<-c("ID","KEY")
 
@@ -26,7 +26,7 @@ test_that("Explore key-iris work", {
 
 test_that("Explore na-iris work", {
   RESULT=FALSE
-  dat <- data.frame(iris)
+  dat <- (iris)
 
   maxNARate <- 0.2
   Explore <- LDE.Explore(dat,NULL,maxNARate)
@@ -39,7 +39,7 @@ test_that("Explore na-iris work", {
 
 test_that("Explore na-key-iris work", {
   RESULT=FALSE
-  dat <- data.frame(iris)
+  dat <- (iris)
 
   maxNARate <- 0.2
   keyNamesMatch<-c("ID","KEY")
@@ -57,7 +57,7 @@ test_that("Explore na-key-iris work", {
 
 test_that("Explore multas works", {
   RESULT=FALSE
-  dat <- data.frame(secop1.multas)
+  dat <- (secop1.multas)
 
   Explore <- LDE.Explore(dat)
 
@@ -69,7 +69,7 @@ test_that("Explore multas works", {
 
 test_that("Explore key-multas works", {
   RESULT=FALSE
-  dat <- data.frame(secop1.multas)
+  dat <- (secop1.multas)
 
   keyNamesMatch<-c("ID","KEY")
 
@@ -83,7 +83,7 @@ test_that("Explore key-multas works", {
 
 test_that("Explore NA-multas works", {
   RESULT=FALSE
-  dat <- data.frame(secop1.multas)
+  dat <- (secop1.multas)
 
   maxNARate <- 0.2
   Explore <- LDE.Explore(dat,NULL,maxNARate)
@@ -96,7 +96,7 @@ test_that("Explore NA-multas works", {
 
 test_that("Explore NA-KEY-multas works", {
   RESULT=FALSE
-  dat <- data.frame(secop1.multas)
+  dat <- (secop1.multas)
 
   maxNARate <- 0.2
   keyNamesMatch<-c("ID","KEY")
@@ -114,7 +114,7 @@ test_that("Explore NA-KEY-multas works", {
 
 test_that("Explore full works", {
   RESULT=FALSE
-  dat <- data.frame(secop1.full)
+  dat <- (secop1.full)
 
   Explore <- LDE.Explore(dat)
 
@@ -126,7 +126,7 @@ test_that("Explore full works", {
 
 test_that("Explore key-full works", {
   RESULT=FALSE
-  dat <- data.frame(secop1.full)
+  dat <- (secop1.full)
 
   keyNamesMatch<-c("ID","KEY")
 
@@ -140,7 +140,7 @@ test_that("Explore key-full works", {
 
 test_that("Explore NA-full works", {
   RESULT=FALSE
-  dat <- data.frame(secop1.full)
+  dat <- (secop1.full)
 
   maxNARate <- 0.2
   Explore <- LDE.Explore(dat,NULL,maxNARate)
@@ -153,7 +153,7 @@ test_that("Explore NA-full works", {
 
 test_that("Explore NA-KEY-full works", {
   RESULT=FALSE
-  dat <- data.frame(secop1.full)
+  dat <- (secop1.full)
 
   maxNARate <- 0.2
   keyNamesMatch<-c("ID","KEY")
@@ -170,7 +170,7 @@ test_that("Explore NA-KEY-full works", {
 #####################
 test_that("Auto multas works", {
   RESULT=FALSE
-  dat <- data.frame(secop1.multas)
+  dat <- (secop1.multas)
 
   Auto <- LDE.AutoProcess(dat)
 
@@ -185,7 +185,7 @@ test_that("Auto multas works", {
 
 test_that("Auto key-multas works", {
   RESULT=FALSE
-  dat <- data.frame(secop1.multas)
+  dat <- (secop1.multas)
 
   keyNamesMatch<-c("ID","KEY")
 
@@ -202,7 +202,7 @@ test_that("Auto key-multas works", {
 
 test_that("Auto na-multas works", {
   RESULT=FALSE
-  dat <- data.frame(secop1.multas)
+  dat <- (secop1.multas)
 
   maxNARate <- 0.2
 
@@ -219,7 +219,7 @@ test_that("Auto na-multas works", {
 
 test_that("Auto na-key-multas works", {
   RESULT=FALSE
-  dat <- data.frame(secop1.multas)
+  dat <- (secop1.multas)
 
   maxNARate <- 0.2
   keyNamesMatch<-c("ID","KEY")
@@ -239,7 +239,7 @@ test_that("Auto na-key-multas works", {
 #####################
 test_that("Auto full works", {
   RESULT=FALSE
-  dat <- data.frame(secop1.full)
+  dat <- (secop1.full)
 
   Auto <- LDE.AutoProcess(dat)
 
@@ -254,7 +254,7 @@ test_that("Auto full works", {
 
 test_that("Auto key-full works", {
   RESULT=FALSE
-  dat <- data.frame(secop1.full)
+  dat <- (secop1.full)
 
   keyNamesMatch<-c("ID","KEY")
 
@@ -271,7 +271,7 @@ test_that("Auto key-full works", {
 
 test_that("Auto na-full works", {
   RESULT=FALSE
-  dat <- data.frame(secop1.full)
+  dat <- (secop1.full)
 
   maxNARate <- 0.2
 
@@ -288,7 +288,7 @@ test_that("Auto na-full works", {
 
 test_that("Auto na-key-full works", {
   RESULT=FALSE
-  dat <- data.frame(secop1.full)
+  dat <- (secop1.full)
 
   maxNARate <- 0.2
   keyNamesMatch<-c("ID","KEY")
@@ -308,7 +308,7 @@ test_that("Auto na-key-full works", {
 #####################
 test_that("Auto iris works", {
   RESULT=FALSE
-  dat <- data.frame(iris)
+  dat <- (iris)
 
   Auto <- LDE.AutoProcess(dat)
 
@@ -323,7 +323,7 @@ test_that("Auto iris works", {
 
 test_that("Auto key-iris works", {
   RESULT=FALSE
-  dat <- data.frame(iris)
+  dat <- (iris)
 
   keyNamesMatch<-c("ID","KEY")
 
@@ -340,7 +340,7 @@ test_that("Auto key-iris works", {
 
 test_that("Auto na-iris works", {
   RESULT=FALSE
-  dat <- data.frame(iris)
+  dat <- (iris)
 
   maxNARate <- 0.2
 
@@ -357,7 +357,7 @@ test_that("Auto na-iris works", {
 
 test_that("Auto na-key-iris works", {
   RESULT=FALSE
-  dat <- data.frame(iris)
+  dat <- (iris)
 
   maxNARate <- 0.2
   keyNamesMatch<-c("ID","KEY")

@@ -23,15 +23,14 @@ library(LargeDataExplorer)
 LDE.Explore() classifies variables of a data.frame by type (bool, categorical, text, numeric, key, etc) and assess whether variables are useful or not for analytics (E.g. Na-only, 1-value only, plain text types are not useful) and if there's a NA threshold that should be reason of exclusion. Descriptive statistics are generated for each variable.
 
 ``` r
-keyNamesMatch <- c("key","id","code")                                     #String vector or NULL to ignore. If set, variable names that start or end with its strings will be asigned as keys. E.g. c("key","id,"code")
-maxNARate <- 0.2                                                          #Number between 0-1 or NULL to ignore. It can be set as null if you don't want to filter by NAs
-df<-data.frame(secop1.full)                                               #secop1.full and secop1.multas are datasets of government purchases included in this package. See full package info
+df<-secop1.full                                                                            #secop1.full and secop1.multas are example datasets of government purchases included in this package. See full package info
 
-Explore.df <- LDE.Explore(df,keyNamesMatch,maxNARate)                   
+keyNamesMatch <- c("key","id")                                                             #Variable names that start or end with these strings will be asigned as keys. E.g. c("key","id,"code"). String vector, or NULL to ignore.
+Explore.df <- LDE.Explore(df,keyNamesMatch)                                                #To set a NA limit. You can use LDE.Explore(df,keyNamesMatch,maxNARate). Numeric values between 0-1 are permited
   
-print(Explore.df.1$statistics)                                            #See statistics of included and excluded variables
-print(Explore.df.1f$var.status)                                           #See whether the variables were excluded or not
-print(Explore.df.1$var.classif)                                           #Show how the variables were clasiffied and why excluded variables were excluded                                  #View the descriptive statistics for numeric variables. You can also see $df.levels, $df.category,
+print(Explore.df.1$statistics)                                                             #See statistics of included and excluded vars. 
+print(Explore.df.1f$var.status)                                                            #Variable names of included and excluded vars
+print(Explore.df.1$var.classif)                                                            #Show how the variables were clasiffied and exclusion reasons.
 ```
 <img src="https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/Explore.png" width="200">
 
@@ -40,8 +39,9 @@ print(Explore.df.1$var.classif)                                           #Show 
 LDE.AutoProcess() automatically fixes the variable types and excludes variables based on the criteria of LDE.Explore()
 
 ``` r
-Auto.df <- LDE.AutoProcess(df)                                            #LDE.Explore(df.1,maxNARate,keyNamesMatch). See function above
-df.clean <- Auto.df$df.filtered                                           #Retrieve the cleaned dataset
+df<-secop1.full   
+Auto.df <- LDE.AutoProcess(df)                                                             #You can use LDE.Explore(df.1,maxNARate,keyNamesMatch). See full package info
+df.clean <- Auto.df$df.filtered                                           
 ```
 <img src="https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/AutoProcess.png" width="200">
 
