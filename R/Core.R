@@ -1,56 +1,94 @@
-core.AutoProcess<-function(dat,dataname,maxNARate,keyNamesMatch){
-  if(ncol(dat)<2 || ncol(dat)<2){
-    stop(paste0(dataname," is not a data.frame"))
-  }
+core.UsefulVars<-function(maxNARate,LargeDataExplorer.Explore1,...){
+  filter.vars=FALSE
   if(!(is.null(maxNARate))){
+    filter.vars=TRUE
     if(!(is.numeric(maxNARate)) | maxNARate<0 | maxNARate>1){
       stop("maxNARate must be a value between 0 and 1")
     }
+    maxNApercentage=maxNARate*100
   }
-  dat=data.frame(dat)
-  if(sum(is.na(dat))==0){
-    dat[dat==""]<-NA
-  }
-  tmp.Explore<-core.ExploreDataset(dat,dataname,keyNamesMatch)
-  tmp.UsefulVars<-core.UsefulVars(maxNARate,tmp.Explore)
+  listx<-list(LargeDataExplorer.Explore1,...)
 
-  #Here begins the code of processing previous steps
+  statistics=list()
+  var.classif=list()
+  var.status=list()
 
-  included.vars<-tmp.UsefulVars$var.status[[dataname]]$included
-  dat.filtered<-subset(dat,select=included.vars)
-  ### Unuseful variable removal and type transformation
-  for (varname in tmp.UsefulVars$var.classif[[dataname]]$useful.vars$df.primarykeys) {
-    dat.filtered[,varname]=as.character(dat.filtered[,varname])
-  }
-  for (varname in tmp.UsefulVars$var.classif[[dataname]]$useful.vars$df.keys) {
-    dat.filtered[,varname]=as.character(dat.filtered[,varname])
-  }
-  for (varname in tmp.UsefulVars$var.classif[[dataname]]$useful.vars$df.category) {
-    dat.filtered[,varname]=as.factor(dat.filtered[,varname])
-  }
-  for (varname in tmp.UsefulVars$var.classif[[dataname]]$useful.vars$df.num) {
-    dat.filtered[,varname]=as.numeric(dat.filtered[,varname])
-  }
-  for (varname in tmp.UsefulVars$var.classif[[dataname]]$useful.vars$df.levels) {
-    dat.filtered[,varname]=as.factor(as.numeric(dat.filtered[,varname]))
-  }
-  i_bool=0
-  for (varname in tmp.UsefulVars$var.classif[[dataname]]$useful.vars$df.bool) {
-    i_bool=i_bool+1
-    modelvl=tmp.UsefulVars$statistics[[dataname]]$useful.vars$df.bool$modelvl[i_bool]
-    newvalues=as.factor(as.numeric(ifelse((dat[,varname]==modelvl)==TRUE,1,0)))
-    newname=gsub(' ','_',modelvl)
-    newname=paste0(newname,"_is",newname)
-    dat.filtered[,varname]=newvalues
-    var_index=which( colnames(dat.filtered)==varname )
-    names(dat.filtered)[var_index]=newname
-    old.bool.vector<-tmp.UsefulVars$statistics[[dataname]]$useful.vars$df.bool[i_bool,]
-    #Changing name in statistics
-    new.bool.stat.values<-internalfun.Summary.bool.base(var_index,varname,newvalues,dataname)
-    tmp.UsefulVars$statistics[[dataname]]$useful.vars$df.bool[i_bool,]=new.bool.stat.values
-  }
+  cat(" \nExploring summaries: ")
+  for(Exploration in listx) {
+    dataname=Exploration$dataname
+    cat(paste0(dataname,"... "))
 
-  return(list("df.filtered"=dat.filtered,"statistics"=tmp.UsefulVars$statistics[[dataname]],"var.classif"=tmp.UsefulVars$var.classif[[dataname]],"var.status"=tmp.UsefulVars$var.status[[dataname]]))
+    dataset.df.text=Exploration$df.text
+    dataset.df.num=Exploration$df.num
+    dataset.df.NA=Exploration$df.NA
+    dataset.df.onevalue=Exploration$df.onevalue
+    dataset.df.repeatedVars=Exploration$df.repeatedVars
+    dataset.df.category=Exploration$df.category
+    dataset.df.levels=Exploration$df.levels
+    dataset.df.bool=Exploration$df.bool
+    dataset.df.primarykeys=Exploration$df.primarykeys
+    dataset.df.keys=Exploration$df.keys
+
+    res.num.filtered=internalfun.UsefulVars.filter(filter.vars,dataset.df.num,maxNApercentage)
+    res.cat.filtered=internalfun.UsefulVars.filter(filter.vars,dataset.df.category,maxNApercentage)
+    res.bool.filtered=internalfun.UsefulVars.filter(filter.vars,dataset.df.bool,maxNApercentage)
+    res.levels.filtered=internalfun.UsefulVars.filter(filter.vars,dataset.df.levels,maxNApercentage)
+
+    dataset.df.num<-res.num.filtered$filtered.df
+    dataset.df.category<-res.cat.filtered$filtered.df
+    dataset.df.bool<-res.bool.filtered$filtered.df
+    dataset.df.levels<-res.levels.filtered$filtered.df
+
+    dataset.df.num.out<-res.num.filtered$excluded.df
+    dataset.df.category.out<-res.cat.filtered$excluded.df
+    dataset.df.bool.out<-res.bool.filtered$excluded.df
+    dataset.df.levels.out<-res.levels.filtered$excluded.df
+
+    dataset.df.text<-internalfun.removeRowNames(dataset.df.text)
+    dataset.df.num<-internalfun.removeRowNames(dataset.df.num)
+    dataset.df.NA<-internalfun.removeRowNames(dataset.df.NA)
+    dataset.df.onevalue<-internalfun.removeRowNames(dataset.df.onevalue)
+    dataset.df.repeatedVars<-internalfun.removeRowNames(dataset.df.repeatedVars)
+
+    dataset.df.category<-internalfun.removeRowNames(dataset.df.category)
+    dataset.df.levels<-internalfun.removeRowNames(dataset.df.levels)
+    dataset.df.bool<-internalfun.removeRowNames(dataset.df.bool)
+    dataset.df.primarykeys<-internalfun.removeRowNames(dataset.df.primarykeys)
+    dataset.df.num<-internalfun.removeRowNames(dataset.df.num)
+    dataset.df.keys<-internalfun.removeRowNames(dataset.df.keys)
+
+    dataset.df.category.out<-internalfun.removeRowNames(dataset.df.category.out)
+    dataset.df.levels.out<-internalfun.removeRowNames(dataset.df.levels.out)
+    dataset.df.bool.out<-internalfun.removeRowNames(dataset.df.bool.out)
+    dataset.df.num.out<-internalfun.removeRowNames(dataset.df.num.out)
+
+    ###################################
+    ########Summary for each dataset
+    #################################
+
+    dataset.classif.useful.vars=list("df.keys"=internalfun.findVarnames(dataset.df.keys),"df.primarykeys"=internalfun.findVarnames(dataset.df.primarykeys),"df.bool"=internalfun.findVarnames(dataset.df.bool),"df.levels"=internalfun.findVarnames(dataset.df.levels),"df.category"=internalfun.findVarnames(dataset.df.category),"df.num"=internalfun.findVarnames(dataset.df.num))
+
+    dataset.classif.filteredbyNAs.vars=list("df.bool"=internalfun.findVarnames(dataset.df.bool.out),"df.levels"=internalfun.findVarnames(dataset.df.levels.out),"df.category"=internalfun.findVarnames(dataset.df.category.out),"df.num"=internalfun.findVarnames(dataset.df.num.out))
+
+    dataset.classif.unuseful.vars=list("df.text"=internalfun.findVarnames(dataset.df.text),"df.NA"=internalfun.findVarnames(dataset.df.NA),"df.onevalue"=internalfun.findVarnames(dataset.df.onevalue),"df.repeatedVars"=internalfun.findVarnames(dataset.df.repeatedVars))
+
+
+
+    dataset.status.included <-c(dataset.classif.useful.vars$df.category, dataset.classif.useful.vars$df.num, dataset.classif.useful.vars$df.primarykeys, dataset.classif.useful.vars$df.levels, dataset.classif.useful.vars$df.keys, dataset.classif.useful.vars$df.bool)
+    dataset.status.excluded <- c(dataset.classif.filteredbyNAs.vars$df.category, dataset.classif.filteredbyNAs.vars$df.num, dataset.classif.filteredbyNAs.vars$df.level,  dataset.classif.filteredbyNAs.vars$df.bool, dataset.classif.unuseful.vars$df.text, dataset.classif.unuseful.vars$df.NA, dataset.classif.unuseful.vars$df.onevalue, dataset.classif.unuseful.vars$df.repeatedVars)
+
+    dataset.statistics.useful.vars=list("df.keys"=dataset.df.keys,"df.primarykeys"=dataset.df.primarykeys,"df.bool"=dataset.df.bool,"df.levels"=dataset.df.levels,"df.category"=dataset.df.category,"df.num"=dataset.df.num)
+    dataset.statistics.unuseful.vars=list("df.text"=dataset.df.text,"df.NA"=dataset.df.NA,"df.onevalue"=dataset.df.onevalue,"df.repeatedVars"=dataset.df.repeatedVars)
+    dataset.statistics.filteredbyNAs.vars=list("df.bool"=dataset.df.bool.out,"df.levels"=dataset.df.levels.out,"df.category"=dataset.df.category.out,"df.num"=dataset.df.num.out)
+    dataset.statistics=list("useful.vars"=dataset.statistics.useful.vars,"unuseful.vars"=dataset.statistics.unuseful.vars,"filteredbyNAs.vars"=dataset.statistics.filteredbyNAs.vars)
+    dataset.var.classif=list("useful.vars"=dataset.classif.useful.vars,"unuseful.vars"=dataset.classif.unuseful.vars,"filteredbyNAs.vars"=dataset.classif.filteredbyNAs.vars)
+    dataset.var.status=list("included"=dataset.status.included,"excluded"=dataset.status.excluded)
+    statistics[[dataname]]=dataset.statistics
+    var.classif[[dataname]]=dataset.var.classif
+    var.status[[dataname]]=dataset.var.status
+  }
+  cat("\nDone!")
+  return(list("statistics"=statistics,"var.classif"=var.classif,"var.status"=var.status))
 }
 
 core.ExploreDataset<-function(dat1,dataname1,keyNamesMatch){
@@ -157,112 +195,64 @@ core.ExploreDataset<-function(dat1,dataname1,keyNamesMatch){
   return(list("dataname"=dataname1,"df.keys"=df.keys,"df.repeatedVars"=df.repeatedVars,"df.primarykeys"=df.primarykeys,"df.bool"=df.bool,"df.levels"=df.levels,"df.category"=df.category,"df.onevalue"=df.onevalue,"df.NA"=df.NA,"df.num"=df.num,"df.text"=df.text))
 }
 
-core.UsefulVars<-function(maxNARate,LargeDataExplorer.Explore1,...){
-  filter.vars=FALSE
+core.ExploreFull<-function(dat,dataname,keyNamesMatch,maxNARate){
+  if(ncol(dat)<2 || ncol(dat)<2){
+    stop(paste0(dataname," is not a data.frame"))
+  }
   if(!(is.null(maxNARate))){
-    filter.vars=TRUE
     if(!(is.numeric(maxNARate)) | maxNARate<0 | maxNARate>1){
       stop("maxNARate must be a value between 0 and 1")
     }
-    maxNApercentage=maxNARate*100
   }
-  listx<-list(LargeDataExplorer.Explore1,...)
-
-  statistics=list()
-  var.classif=list()
-  var.status=list()
-
-  cat(" \nExploring summaries: ")
-  for(Exploration in listx) {
-    dataname=Exploration$dataname
-    cat(paste0(dataname,"... "))
-
-    dataset.df.text=Exploration$df.text
-    dataset.df.num=Exploration$df.num
-    dataset.df.NA=Exploration$df.NA
-    dataset.df.onevalue=Exploration$df.onevalue
-    dataset.df.repeatedVars=Exploration$df.repeatedVars
-    dataset.df.category=Exploration$df.category
-    dataset.df.levels=Exploration$df.levels
-    dataset.df.bool=Exploration$df.bool
-    dataset.df.primarykeys=Exploration$df.primarykeys
-    dataset.df.keys=Exploration$df.keys
-
-    res.num.filtered=internalfun.UsefulVars.filter(filter.vars,dataset.df.num,maxNApercentage)
-    res.cat.filtered=internalfun.UsefulVars.filter(filter.vars,dataset.df.category,maxNApercentage)
-    res.bool.filtered=internalfun.UsefulVars.filter(filter.vars,dataset.df.bool,maxNApercentage)
-    res.levels.filtered=internalfun.UsefulVars.filter(filter.vars,dataset.df.levels,maxNApercentage)
-    res.keys.filtered=internalfun.UsefulVars.filter(filter.vars,dataset.df.keys,maxNApercentage)
-
-    dataset.df.num<-res.num.filtered$filtered.df
-    dataset.df.category<-res.cat.filtered$filtered.df
-    dataset.df.bool<-res.bool.filtered$filtered.df
-    dataset.df.levels<-res.levels.filtered$filtered.df
-    dataset.df.keys<-res.keys.filtered$filtered.df
-
-    dataset.df.num.out<-res.num.filtered$excluded.df
-    dataset.df.category.out<-res.cat.filtered$excluded.df
-    dataset.df.bool.out<-res.bool.filtered$excluded.df
-    dataset.df.levels.out<-res.levels.filtered$excluded.df
-    dataset.df.keys.out<-res.keys.filtered$excluded.df
-
-    dataset.df.text<-internalfun.removeRowNames(dataset.df.text)
-    dataset.df.num<-internalfun.removeRowNames(dataset.df.num)
-    dataset.df.NA<-internalfun.removeRowNames(dataset.df.NA)
-    dataset.df.onevalue<-internalfun.removeRowNames(dataset.df.onevalue)
-    dataset.df.repeatedVars<-internalfun.removeRowNames(dataset.df.repeatedVars)
-
-    dataset.df.category<-internalfun.removeRowNames(dataset.df.category)
-    dataset.df.levels<-internalfun.removeRowNames(dataset.df.levels)
-    dataset.df.bool<-internalfun.removeRowNames(dataset.df.bool)
-    dataset.df.primarykeys<-internalfun.removeRowNames(dataset.df.primarykeys)
-    dataset.df.num<-internalfun.removeRowNames(dataset.df.num)
-    dataset.df.keys<-internalfun.removeRowNames(dataset.df.keys)
-
-    dataset.df.category.out<-internalfun.removeRowNames(dataset.df.category.out)
-    dataset.df.levels.out<-internalfun.removeRowNames(dataset.df.levels.out)
-    dataset.df.bool.out<-internalfun.removeRowNames(dataset.df.bool.out)
-    dataset.df.num.out<-internalfun.removeRowNames(dataset.df.num.out)
-    dataset.df.keys.out<-internalfun.removeRowNames(dataset.df.keys.out)
-
-    ###################################
-    ########Summary for each dataset
-    #################################
-
-    dataset.classif.useful.vars=list()
-    dataset.classif.useful.vars$df.category=internalfun.findVarnames(dataset.df.category)
-    dataset.classif.useful.vars$df.num=internalfun.findVarnames(dataset.df.num)
-    dataset.classif.useful.vars$df.primarykeys=internalfun.findVarnames(dataset.df.primarykeys)
-    dataset.classif.useful.vars$df.levels=internalfun.findVarnames(dataset.df.levels)
-    dataset.classif.useful.vars$df.keys=internalfun.findVarnames(dataset.df.keys)
-    dataset.classif.useful.vars$df.bool=internalfun.findVarnames(dataset.df.bool)
-
-    dataset.classif.filteredbyNAs.vars=list()
-    dataset.classif.filteredbyNAs.vars$df.category=internalfun.findVarnames(dataset.df.category.out)
-    dataset.classif.filteredbyNAs.vars$df.num=internalfun.findVarnames(dataset.df.num.out)
-    dataset.classif.filteredbyNAs.vars$df.levels=internalfun.findVarnames(dataset.df.levels.out)
-    dataset.classif.filteredbyNAs.vars$df.keys=internalfun.findVarnames(dataset.df.keys.out)
-    dataset.classif.filteredbyNAs.vars$df.bool=internalfun.findVarnames(dataset.df.bool.out)
-
-    dataset.classif.unuseful.vars=list()
-    dataset.classif.unuseful.vars$df.text=internalfun.findVarnames(dataset.df.text)
-    dataset.classif.unuseful.vars$df.NA=internalfun.findVarnames(dataset.df.NA)
-    dataset.classif.unuseful.vars$df.onevalue=internalfun.findVarnames(dataset.df.onevalue)
-    dataset.classif.unuseful.vars$df.repeatedVars=internalfun.findVarnames(dataset.df.repeatedVars)
-
-    dataset.status.included <-c(dataset.classif.useful.vars$df.category, dataset.classif.useful.vars$df.num, dataset.classif.useful.vars$df.primarykeys, dataset.classif.useful.vars$df.levels, dataset.classif.useful.vars$df.keys, dataset.classif.useful.vars$df.bool)
-    dataset.status.excluded <- c(dataset.classif.filteredbyNAs.vars$df.category, dataset.classif.filteredbyNAs.vars$df.num, dataset.classif.filteredbyNAs.vars$df.level,  dataset.classif.filteredbyNAs.vars$df.keys, dataset.classif.filteredbyNAs.vars$df.bool, dataset.classif.unuseful.vars$df.text, dataset.classif.unuseful.vars$df.NA, dataset.classif.unuseful.vars$df.onevalue, dataset.classif.unuseful.vars$df.repeatedVars)
-
-    dataset.statistics.useful.vars=list("df.keys"=dataset.df.keys,"df.primarykeys"=dataset.df.primarykeys,"df.bool"=dataset.df.bool,"df.levels"=dataset.df.levels,"df.category"=dataset.df.category,"df.num"=dataset.df.num)
-    dataset.statistics.unuseful.vars=list("df.text"=dataset.df.text,"df.NA"=dataset.df.NA,"df.onevalue"=dataset.df.onevalue,"df.repeatedVars"=dataset.df.repeatedVars)
-    dataset.statistics.filteredbyNAs.vars=list("df.keys"=dataset.df.keys.out,"df.bool"=dataset.df.bool.out,"df.levels"=dataset.df.levels.out,"df.category"=dataset.df.category.out,"df.num"=dataset.df.num.out)
-    dataset.statistics=list("useful.vars"=dataset.statistics.useful.vars,"unuseful.vars"=dataset.statistics.unuseful.vars,"filteredbyNAs.vars"=dataset.statistics.filteredbyNAs.vars)
-    dataset.var.classif=list("useful.vars"=dataset.classif.useful.vars,"unuseful.vars"=dataset.classif.unuseful.vars,"filteredbyNAs.vars"=dataset.classif.filteredbyNAs.vars)
-    dataset.var.status=list("included"=dataset.status.included,"excluded"=dataset.status.excluded)
-    statistics[[dataname]]=dataset.statistics
-    var.classif[[dataname]]=dataset.var.classif
-    var.status[[dataname]]=dataset.var.status
+  dat=data.frame(dat)
+  if(sum(is.na(dat))==0){
+    print("There are no NAs, may be you should use dat[dat==\"\"]<-NA to convert empty strings to NAs")
   }
-  cat("\nDone!")
-  return(list("statistics"=statistics,"var.classif"=var.classif,"var.status"=var.status))
+  tmp.Explore<-core.ExploreDataset(dat,dataname,keyNamesMatch)
+  tmp.UsefulVars<-core.UsefulVars(maxNARate,tmp.Explore)
+  return(list("statistics"=tmp.UsefulVars$statistics[[dataname]],"var.classif"=tmp.UsefulVars$var.classif[[dataname]],"var.status"=tmp.UsefulVars$var.status[[dataname]]))
+}
+
+
+
+
+
+core.AutoProcess<-function(dat,dataname,keyNamesMatch,maxNARate){
+  res=core.ExploreFull(dat,dataname,keyNamesMatch,maxNARate)
+
+  included.vars<-res$var.status$included
+  dat.filtered<-subset(dat,select=included.vars)
+  ### Unuseful variable removal and type transformation
+  for (varname in res$var.classif$useful.vars$df.primarykeys) {
+    dat.filtered[,varname]=as.character(dat.filtered[,varname])
+  }
+  for (varname in res$var.classif$useful.vars$df.keys) {
+    dat.filtered[,varname]=as.character(dat.filtered[,varname])
+  }
+  for (varname in res$var.classif$useful.vars$df.category) {
+    dat.filtered[,varname]=as.factor(dat.filtered[,varname])
+  }
+  for (varname in res$var.classif$useful.vars$df.num) {
+    dat.filtered[,varname]=as.numeric(dat.filtered[,varname])
+  }
+  for (varname in res$var.classif$useful.vars$df.levels) {
+    dat.filtered[,varname]=as.factor(as.numeric(dat.filtered[,varname]))
+  }
+  i_bool=0
+  for (varname in res$var.classif$useful.vars$df.bool) {
+    i_bool=i_bool+1
+    modelvl=res$statistics$useful.vars$df.bool$modelvl[i_bool]
+    newvalues=as.factor(as.numeric(ifelse((dat[,varname]==modelvl)==TRUE,1,0)))
+    newname=gsub(' ','_',modelvl)
+    newname=paste0(newname,"_is",newname)
+    dat.filtered[,varname]=newvalues
+    var_index=which( colnames(dat.filtered)==varname )
+    names(dat.filtered)[var_index]=newname
+    old.bool.vector<-res$statistics$useful.vars$df.bool[i_bool,]
+    #Changing name in statistics
+    new.bool.stat.values<-internalfun.Summary.bool.base(var_index,varname,newvalues,dataname)
+    res$statistics$useful.vars$df.bool[i_bool,]=new.bool.stat.values
+  }
+
+  return(list("df.filtered"=dat.filtered,"statistics"=res$statistics,"var.classif"=res$var.classif,"var.status"=res$var.status))
 }
