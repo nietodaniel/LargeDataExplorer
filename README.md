@@ -24,10 +24,10 @@ LargeDataExplorer can automatically can automatically classify the variables of 
 
   Relevant Data Vars         | Relevant Information Vars | Unuseful Vars (To exclude)
 :---------------------------:|:-------------------------:|:--------------------------:
-<li>Numeric</li>             | <li>Primary keys</li>     | <li>NAs</li>
-<li>Boolean</li>             | <li>Keys and Ids</li>     | <li>Uni-value</li>
-<li>Categoric (Numeric)</li> | <li>Dates</li>            | <li>Text</li>
-<li>Categoric (Text)</li>    |                           | <li>Repeated information</li>
+<ul><li>Numeric</li></ul> | <ul><li>Primary keys</li></ul> | <ul><li>NAs</li></ul>
+<ul><li>Boolean</li></ul> | <ul><li>Keys and Ids</li></ul> | <ul><li>Uni-value</li></ul>
+<ul><li>Categoric (Numeric)</li></ul> | <ul><li>Dates</li></ul> | <ul><li>Text</li></ul>
+<ul><li>Categoric (Text)</li></ul> | | <li>Repeated information</li></ul>
  
  
 ## Variable exploration & classification, and descriptive statistics
