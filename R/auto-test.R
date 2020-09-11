@@ -38,20 +38,20 @@ autotest.exports.filestructure<-function(res){
   autotest.list.Ok.iterative(c("useful.vars","unuseful.vars","filteredbyNAs.vars"),res$statistics)
   autotest.list.Ok.iterative(c("useful.vars","unuseful.vars","filteredbyNAs.vars"),res$statistics)
 
-  autotest.list.Ok.iterative(c("df.num","df.levels","df.bool","df.category","df.primarykeys","df.keys"),res$var.classif$useful.vars)
+  autotest.list.Ok.iterative(c("df.num","df.levels","df.bool","df.category","df.primarykeys","df.keys","df.date"),res$var.classif$useful.vars)
   autotest.list.not.iterative(c("df.text","df.NA","df.onevalue","df.repeatedVars"),res$var.classif$useful.vars)
 
-  autotest.list.Ok.iterative(c("df.num","df.levels","df.bool","df.category"),res$var.classif$filteredbyNAs.vars)
+  autotest.list.Ok.iterative(c("df.num","df.levels","df.bool","df.category","df.date"),res$var.classif$filteredbyNAs.vars)
   autotest.list.not.iterative(c("df.text","df.NA","df.onevalue","df.repeatedVars","df.keys","df.primarykeys"),res$var.classif$filteredbyNAs.vars)
 
   autotest.list.Ok.iterative(c("df.text","df.NA","df.onevalue","df.repeatedVars"),res$var.classif$unuseful.vars)
   autotest.list.not.iterative(c("df.num","df.levels","df.bool","df.category","df.primarykeys","df.keys"),res$var.classif$unuseful.vars)
 
   ###for statistics
-  autotest.list.Ok.iterative(c("df.num","df.levels","df.bool","df.category","df.primarykeys","df.keys"),res$statistics$useful.vars)
+  autotest.list.Ok.iterative(c("df.num","df.levels","df.bool","df.category","df.primarykeys","df.keys","df.date"),res$statistics$useful.vars)
   autotest.list.not.iterative(c("df.text","df.NA","df.onevalue","df.repeatedVars"),res$statistics$useful.vars)
 
-  autotest.list.Ok.iterative(c("df.num","df.levels","df.bool","df.category"),res$statistics$filteredbyNAs.vars)
+  autotest.list.Ok.iterative(c("df.num","df.levels","df.bool","df.category","df.date"),res$statistics$filteredbyNAs.vars)
   autotest.list.not.iterative(c("df.text","df.NA","df.onevalue","df.repeatedVars","df.primarykeys","df.keys"),res$statistics$filteredbyNAs.vars)
 
   autotest.list.Ok.iterative(c("df.text","df.NA","df.onevalue","df.repeatedVars"),res$statistics$unuseful.vars)

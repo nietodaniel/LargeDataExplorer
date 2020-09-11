@@ -4,9 +4,9 @@
 \name{LargeDataExplorer-package}
 \alias{LargeDataExplorer}
 \alias{LargeDataExplorer-package}
-\title{LargeDataExplorer: Fast and powerful package for preliminary exploration of large datasets}
+\title{LargeDataExplorer: Powerful package to clean and re-format very large datasets after classifying its variables by their usefulness for machine learning}
 \description{
-This package explores a dataset, categorizing its variables as numeric, categorical (text), levels (categorical numbers), boolean, plain text, Primary Key (A different value for each row), NA (Empty variable)or Univalue (Only one value in the whole variable). It will also calculate basic statistics for each variable.
+This package can identify the irrelevant variables for machine learning and exclude them, while keeping and tranforming the useful ones. It also can explore a dataset, categorizing its variables as numeric, categorical (text), categorical (number), boolean, date, primary keys, keys, NA-variable, Univalue, plain text and variables with repeated information. It will also calculate the basic statistics for each variable.
 }
 \seealso{
 Useful links:

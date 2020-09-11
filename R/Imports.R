@@ -9,3 +9,7 @@ imports.median <- function(vec) {
 imports.sd <- function(vec) {
   return(stats::sd(vec,na.rm = TRUE))
 }
+
+imports.na.exclude <- function(vec) {
+  return(stats::na.exclude(vec))
+}
