@@ -6,37 +6,36 @@
 
 # LargeDataExplorer
 
-Powerful package to clean and re-format very large datasets after classifying its variables by their usefulness for machine learning
+Powerful package to clean and re-format very large datasets after classifying its variables by their usefulness for machine learning.
 [(Full Package Information)](http://www.digitalmedtools.com/Freeware/LargeDataExplorer)
+
 *Because summary() isn't enough when you have >200 columns and even GBs of data, and you can't easily know which variables have no relevant information*
 
 ## Installation & Loading
-
 ``` r
 # install.packages("devtools")
 library(devtools)
 devtools::install_github("nietodaniel/LargeDataExplorer")
 library(LargeDataExplorer)
 ```
-
 ## Detected variable types
 
 LargeDataExplorer can automatically can automatically classify the variables of a dataset within the following categories:
 
   Relevant Data Vars         | Relevant Information Vars | Unuseful Vars (To exclude)
 :---------------------------:|:-------------------------:|:--------------------------:
- - Numeric                   | - Primary keys            | - NAs
- - Boolean                   | - Keys and Ids            | - Uni-value
- - Categoric (Numeric)       | - Dates                   | - Text
- - Categoric (Text)          |                           | - Repeated information
+<li>Numeric</li>             | <li>Primary keys</li>     | <li>NAs</li>
+<li>Boolean</li>             | <li>Keys and Ids</li>     | <li>Uni-value</li>
+<li>Categoric (Numeric)</li> | <li>Dates</li>            | <li>Text</li>
+<li>Categoric (Text)</li>    |                           | <li>Repeated information</li>
  
  
 ## Variable exploration & classification, and descriptive statistics
 
 LDE.Explore() classifies the variables by its type and usefulness. It generates descriptive statistics, but doesn't transform the data. Useful for datasets of gygabytes, where the RAM is limited
 ``` r
-df<-secop1.full                                                                            #Example dataset of government purchases included in this package. See full package info
-keyNamesMatch <- c("key","id")                                                             #Variable names that start or end with these strings will be asigned as keys. E.g. c("key","id,"code"). String vector, or NULL to ignore.
+df<-secop1.full                                                                          #Example dataset of government purchases included in this package. See full package info
+keyNamesMatch <- c("key","id")                                                           #Variable names that start or end with these strings will be asigned as keys. E.g. c("key","id,"code"). String vector, or NULL to ignore.
 Explore.df <- LDE.Explore(df,keyNamesMatch)                                                
 ```
   Explore.df$statistics      |  Explore.df$var.status    |  Explore.df$classif
@@ -50,9 +49,9 @@ LDE.AutoProcess() returns a cleaned and reformatted dataset after removing unuse
 
 ``` r
 df<-secop1.full   
-keyNamesMatch <- c("key","id")                                                             #See LDE.Explore()
+keyNamesMatch <- c("key","id")                                                           #See LDE.Explore()
 Auto.df <- LDE.AutoProcess(df,keyNamesMatch)                                               
-df.clean <- Auto.df$df.filtered                                                            #Cleaned dataset
+df.clean <- Auto.df$df.filtered                                                          #Cleaned dataset
 ```
 <img src="https://raw.githubusercontent.com/nietodaniel/LargeDataExplorer/master/images/AutoProcess.png" width="200">
 
