@@ -20,7 +20,7 @@ library(LargeDataExplorer)
 ```
 ## Detected variable types
 
-LargeDataExplorer can automatically can automatically classify the variables of a dataset within the following categories:
+LargeDataExplorer can automatically classify the variables of a dataset within the following categories:
 
   Relevant Data Vars         | Relevant Information Vars | Unuseful Vars (To exclude)
 :---------------------------:|:-------------------------:|:--------------------------:

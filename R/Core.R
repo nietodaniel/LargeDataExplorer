@@ -81,7 +81,7 @@ core.UsefulVars<-function(maxNARate,LargeDataExplorer.Explore1,...){
 
 
     dataset.status.included <-c(dataset.classif.useful.vars$df.category, dataset.classif.useful.vars$df.num,dataset.classif.useful.vars$df.date, dataset.classif.useful.vars$df.primarykeys, dataset.classif.useful.vars$df.levels, dataset.classif.useful.vars$df.keys, dataset.classif.useful.vars$df.bool)
-    dataset.status.excluded <- c(dataset.classif.filteredbyNAs.vars$df.category, dataset.classif.filteredbyNAs.vars$df.num,dataset.classif.useful.vars$df.date, dataset.classif.filteredbyNAs.vars$df.level, dataset.classif.filteredbyNAs.vars$df.bool, dataset.classif.unuseful.vars$df.text, dataset.classif.unuseful.vars$df.NA, dataset.classif.unuseful.vars$df.onevalue, dataset.classif.unuseful.vars$df.repeatedVars)
+    dataset.status.excluded <- c(dataset.classif.filteredbyNAs.vars$df.category, dataset.classif.filteredbyNAs.vars$df.num, dataset.classif.filteredbyNAs.vars$df.level, dataset.classif.filteredbyNAs.vars$df.bool, dataset.classif.unuseful.vars$df.text, dataset.classif.unuseful.vars$df.NA, dataset.classif.unuseful.vars$df.onevalue, dataset.classif.unuseful.vars$df.repeatedVars)
 
     dataset.statistics.useful.vars=list("df.keys"=dataset.df.keys,"df.primarykeys"=dataset.df.primarykeys,"df.bool"=dataset.df.bool,"df.levels"=dataset.df.levels,"df.category"=dataset.df.category,"df.num"=dataset.df.num,"df.date"=dataset.df.date)
     dataset.statistics.unuseful.vars=list("df.text"=dataset.df.text,"df.NA"=dataset.df.NA,"df.onevalue"=dataset.df.onevalue,"df.repeatedVars"=dataset.df.repeatedVars)
